@@ -4,13 +4,241 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- css framework stylesheet here -->
+    <!-- MaterializeCSS CDN link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- fonts link here -->
     <link rel="stylesheet" href="./assets/css/styles.css">
     <title>Astrowatch.io</title>
 </head>
 <body>
-    
+    <!-- header start -->
+    <header>
+        <h1>Astrowatch.io</h1>
+        <!-- place dark mode icon in span -->
+        <span></span>
+    </header>
+    <!-- header end -->
+    <!-- main start -->
+    <main>
+        <!-- left column start -->
+        <section>
+            <!-- Where and When box start -->
+            <section>
+                <h2>Where and When</h2>
+                <!-- location entry start -->
+                <div id="location">
+                    <label for="location-input">Enter your viewing location:</label>
+                    <input type="text" id="location-input" />
+                    <button id="set-location">Set Location</button>
+                    <p id="location-name"></p>
+                </div>
+                <!-- location entry end -->
+                <!-- date/time start -->
+                <div id="date-time">
+                    <label for="date-time-input">If you'd like to see future details, enter a date:</label>
+                    <input type="datetime-local" name="view-date" />
+                    <button id="set-date-time">Set Date</button>
+                    <p id="view-date-time"></p>
+                </div>
+                <!-- date/time end -->
+            </section>
+            <!-- Where and When box end -->
+            <!-- forecast box start -->
+            <section>
+                <h2>8-Day Forecast</h2>
+                <!-- forecast container start -->
+                <div id="forecast-container">
+                    <!-- forecast first col start -->
+                    <div>
+                        <!-- today's forecast card start -->
+                        <article id="forecast-today" class="forecast-card">
+                            <p class="weather-date">Date</p>
+                            <!-- weather icon goes in span -->
+                            <span class="weather-icon"></span>
+                            <p class="temperature">Temp</p>
+                            <!-- visibility icon goes in span -->
+                            <span class="visibility-icon"></span>
+                            <p class="sky-visibility">Visibility</p>
+                        </article>
+                        <!-- today's forecast card end -->
+                        <!-- forecast card start -->
+                        <article class="forecast-card">
+                            <p class="weather-date">Date</p>
+                            <!-- weather icon goes in span -->
+                            <span class="weather-icon"></span>
+                            <p class="temperature">Temp</p>
+                        </article>
+                        <!-- forecast card end -->
+                        <!-- forecast card start -->
+                        <article class="forecast-card">
+                            <p class="weather-date">Date</p>
+                            <!-- weather icon goes in span -->
+                            <span class="weather-icon"></span>
+                            <p class="temperature">Temp</p>
+                        </article>
+                        <!-- forecast card end -->
+                    </div>
+                    <!-- forecast first col end -->
+                    <!-- forecast second col start -->
+                    <div>
+                        <!-- forecast card start -->
+                        <article class="forecast-card">
+                            <p class="weather-date">Date</p>
+                            <!-- weather icon goes in span -->
+                            <span class="weather-icon"></span>
+                            <p class="temperature">Temp</p>
+                        </article>
+                        <!-- forecast card end -->
+                        <!-- forecast card start -->
+                        <article class="forecast-card">
+                            <p class="weather-date">Date</p>
+                            <!-- weather icon goes in span -->
+                            <span class="weather-icon"></span>
+                            <p class="temperature">Temp</p>
+                        </article>
+                        <!-- forecast card end -->
+                        <!-- forecast card start -->
+                        <article class="forecast-card">
+                            <p class="weather-date">Date</p>
+                            <!-- weather icon goes in span -->
+                            <span class="weather-icon"></span>
+                            <p class="temperature">Temp</p>
+                        </article>
+                        <!-- forecast card end -->
+                    </div>
+                    <!-- forecast second col end -->
+                    <!-- forecast third col start -->
+                    <div>
+                        <!-- forecast card start -->
+                        <article class="forecast-card">
+                            <p class="weather-date">Date</p>
+                            <!-- weather icon goes in span -->
+                            <span class="weather-icon"></span>
+                            <p class="temperature">Temp</p>
+                        </article>
+                        <!-- forecast card end -->
+                        <!-- forecast card start -->
+                        <article class="forecast-card">
+                            <p class="weather-date">Date</p>
+                            <!-- weather icon goes in span -->
+                            <span class="weather-icon"></span>
+                            <p class="temperature">Temp</p>
+                        </article>
+                        <!-- forecast card end -->
+                    </div>
+                    <!-- forecast third col end -->
+                </div>
+                <!-- forecast container end -->
+            </section>
+            <!-- forecast box end -->
+        </section>
+        <!-- left column end -->
+        <!-- right column start -->
+        <section>
+            <h2>Viewing Details</h2>
+            <!-- details sections container start -->
+            <div id="details-container">
+                <!-- left details column start -->
+                <section>
+                    <!-- Sun Cycle section start -->
+                    <section id="sun-cycle">
+                        <h3>Sun Cycle</h3>
+                        <!-- sunrise container start -->
+                        <div id="sunrise">
+                            <!-- sunrise icon goes in span -->
+                            <span></span>
+                            <p id="sunrise-time">Sunrise Time</p>
+                        </div>
+                        <!-- sunrise container end -->
+                        <!-- sunset container start -->
+                        <div id="sunset">
+                            <!-- sunset icon goes in span -->
+                            <span></span>
+                            <p id="sunset-time">Sunset Time</p>
+                        </div>
+                        <!-- sunset container end -->
+                    </section>
+                    <!-- Sun Cycle section end -->
+                    <!-- Moon Cycle section start -->
+                    <section id="moon-cycle">
+                        <h3>Moon Cycle</h3>
+                        <!-- Moonrise container start -->
+                        <div id="moonrise">
+                            <!-- Moonrise icon goes in span -->
+                            <span></span>
+                            <p id="moonrise-time">Moonrise Time</p>
+                        </div>
+                        <!-- Moonrise container end -->
+                        <!-- Moonset container start -->
+                        <div id="moonset">
+                            <!-- Moonset icon goes in span -->
+                            <span></span>
+                            <p id="moonset-time">Moonset Time</p>
+                        </div>
+                        <!-- Moonset container end -->
+                    </section>
+                    <!-- Moon Cycle section end -->
+                </section>
+                <!-- left details column end -->
+                <!-- right details column start -->
+                <section>
+                    <h2>Is it in Your Sky?</h2>
+                    <!-- Mercury visibility container start -->
+                    <div id="mercury">
+                        <h4>Mercury</h4>
+                        <!-- Mercury icon goes in span -->
+                        <span></span>
+                        <p class="is-it-visibile">Yes or No</p>
+                    </div>
+                    <!-- Mercury visibilitiy container end -->
+                    <!-- Venus visibility container start -->
+                    <div id="venus">
+                        <h4>Venus</h4>
+                        <!-- Venus icon goes in span -->
+                        <span></span>
+                        <p class="is-it-visibile">Yes or No</p>
+                    </div>
+                    <!-- Venus visibilitiy container end -->
+                    <!-- Mars visibility container start -->
+                    <div id="mars">
+                        <h4>Mars</h4>
+                        <!-- Mars icon goes in span -->
+                        <span></span>
+                        <p class="is-it-visibile">Yes or No</p>
+                    </div>
+                    <!-- Mars visibilitiy container end -->
+                    <!-- Jupiter visibility container start -->
+                    <div id="jupiter">
+                        <h4>Jupiter</h4>
+                        <!-- Jupiter icon goes in span -->
+                        <span></span>
+                        <p class="is-it-visibile">Yes or No</p>
+                    </div>
+                    <!-- Jupiter visibilitiy container end -->
+                    <!-- Uranus visibility container start -->
+                    <div id="uranus">
+                        <h4>Uranus</h4>
+                        <!-- Uranus icon goes in span -->
+                        <span></span>
+                        <p class="is-it-visibile">Yes or No</p>
+                    </div>
+                    <!-- Uranus visibilitiy container end -->
+                    <!-- Neptune visibility container start -->
+                    <div id="neptune">
+                        <h4>Neptune</h4>
+                        <!-- Neptune icon goes in span -->
+                        <span></span>
+                        <p class="is-it-visibile">Yes or No</p>
+                    </div>
+                    <!-- Neptune visibilitiy container end -->
+                </section>
+                <!-- right details column end -->
+            </div>
+            <!-- details sections container end -->
+        </section>
+        <!-- right column end -->
+    </main>
+    <!-- main end -->
     <!-- scripts -->
     <!-- any dependencies for frameworks go first -->
     <script src="https://cdn.jsdelivr.net/gh/lizard-isana/orb.js@v2.4/build/min/orb.v2.min.js"></script>
