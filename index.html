@@ -13,23 +13,23 @@
 <body>
     <!-- header start -->
     <header>
-        <h1>Astrowatch.io</h1>
+        <h1 class="card-panel purple darken-2 white-text ">Astrowatch.io</h1>
         <!-- place dark mode icon in span -->
         <span></span>
     </header>
     <!-- header end -->
     <!-- main start -->
-    <main>
+    <main class="row">
         <!-- left column start -->
-        <section>
+        <section class="col l6">
             <!-- Where and When box start -->
-            <section>
-                <h2>Where and When</h2>
+            <section class="col 6">
+                <h2 class="center-align">Where and When</h2>
                 <!-- location entry start -->
                 <div id="location">
                     <label for="location-input">Enter your viewing location:</label>
                     <input type="text" id="location-input" />
-                    <button id="set-location">Set Location</button>
+                    <button id="set-location" class=" right -align btn pulse">Set Location</button>
                     <p id="location-name"></p>
                 </div>
                 <!-- location entry end -->
@@ -37,19 +37,19 @@
                 <div id="date-time">
                     <label for="date-time-input">If you'd like to see future details, enter a date:</label>
                     <input type="datetime-local" name="view-date" />
-                    <button id="set-date-time">Set Date</button>
+                    <button id="set-date-time" class="right -align btn pulse">Set Date</button>
                     <p id="view-date-time"></p>
                 </div>
                 <!-- date/time end -->
             </section>
             <!-- Where and When box end -->
             <!-- forecast box start -->
-            <section>
-                <h2>8-Day Forecast</h2>
+            <section class="col s8">
+                <h2 class="center-align">8-Day Forecast</h2>
                 <!-- forecast container start -->
-                <div id="forecast-container">
+                <div id="forecast-container" class="row">
                     <!-- forecast first col start -->
-                    <div>
+                    <div class="col s4">
                         <!-- today's forecast card start -->
                         <article id="forecast-today" class="forecast-card">
                             <p class="weather-date">Date</p>
@@ -80,7 +80,7 @@
                     </div>
                     <!-- forecast first col end -->
                     <!-- forecast second col start -->
-                    <div>
+                    <div class="col s4">
                         <!-- forecast card start -->
                         <article class="forecast-card">
                             <p class="weather-date">Date</p>
@@ -108,7 +108,7 @@
                     </div>
                     <!-- forecast second col end -->
                     <!-- forecast third col start -->
-                    <div>
+                    <div class="col s4">
                         <!-- forecast card start -->
                         <article class="forecast-card">
                             <p class="weather-date">Date</p>
@@ -134,46 +134,46 @@
         </section>
         <!-- left column end -->
         <!-- right column start -->
-        <section>
-            <h2>Viewing Details</h2>
+        <section class="col l6">
+            <h2 class="center-align">Viewing Details</h2>
             <!-- details sections container start -->
             <div id="details-container">
                 <!-- left details column start -->
-                <section>
+                <section class="col s6">
                     <!-- Sun Cycle section start -->
                     <section id="sun-cycle">
-                        <h3>Sun Cycle</h3>
+                        <h3 class="center-align">Sun Cycle</h3>
                         <!-- sunrise container start -->
                         <div id="sunrise">
                             <!-- sunrise icon goes in span -->
                             <span></span>
-                            <p id="sunrise-time">Sunrise Time</p>
+                            <p id="sunrise-time" class="right-align">Sunrise Time</p>
                         </div>
                         <!-- sunrise container end -->
                         <!-- sunset container start -->
                         <div id="sunset">
                             <!-- sunset icon goes in span -->
                             <span></span>
-                            <p id="sunset-time">Sunset Time</p>
+                            <p id="sunset-time" class="right-align">Sunset Time</p>
                         </div>
                         <!-- sunset container end -->
                     </section>
                     <!-- Sun Cycle section end -->
                     <!-- Moon Cycle section start -->
                     <section id="moon-cycle">
-                        <h3>Moon Cycle</h3>
+                        <h3 class="center-align">Moon Cycle</h3>
                         <!-- Moonrise container start -->
                         <div id="moonrise">
                             <!-- Moonrise icon goes in span -->
                             <span></span>
-                            <p id="moonrise-time">Moonrise Time</p>
+                            <p id="moonrise-time" class="right-align">Moonrise Time</p>
                         </div>
                         <!-- Moonrise container end -->
                         <!-- Moonset container start -->
                         <div id="moonset">
                             <!-- Moonset icon goes in span -->
                             <span></span>
-                            <p id="moonset-time">Moonset Time</p>
+                            <p id="moonset-time" class="right-align">Moonset Time</p>
                         </div>
                         <!-- Moonset container end -->
                     </section>
@@ -182,9 +182,9 @@
                 <!-- left details column end -->
                 <!-- right details column start -->
                 <section>
-                    <h2>Is it in Your Sky?</h2>
+                    <h2 class="center-algin">Is it in Your Sky?</h2>
                     <!-- Mercury visibility container start -->
-                    <div id="mercury">
+                    <div id="mercury" class="col s4">
                         <h4>Mercury</h4>
                         <!-- Mercury icon goes in span -->
                         <span></span>
@@ -192,7 +192,7 @@
                     </div>
                     <!-- Mercury visibilitiy container end -->
                     <!-- Venus visibility container start -->
-                    <div id="venus">
+                    <div id="venus" class="col s4">
                         <h4>Venus</h4>
                         <!-- Venus icon goes in span -->
                         <span></span>
@@ -200,7 +200,7 @@
                     </div>
                     <!-- Venus visibilitiy container end -->
                     <!-- Mars visibility container start -->
-                    <div id="mars">
+                    <div id="mars" class=" col s4">
                         <h4>Mars</h4>
                         <!-- Mars icon goes in span -->
                         <span></span>
@@ -208,7 +208,7 @@
                     </div>
                     <!-- Mars visibilitiy container end -->
                     <!-- Jupiter visibility container start -->
-                    <div id="jupiter">
+                    <div id="jupiter" class="col s4">
                         <h4>Jupiter</h4>
                         <!-- Jupiter icon goes in span -->
                         <span></span>
@@ -216,7 +216,7 @@
                     </div>
                     <!-- Jupiter visibilitiy container end -->
                     <!-- Uranus visibility container start -->
-                    <div id="uranus">
+                    <div id="uranus" class="col s4">
                         <h4>Uranus</h4>
                         <!-- Uranus icon goes in span -->
                         <span></span>
@@ -224,7 +224,7 @@
                     </div>
                     <!-- Uranus visibilitiy container end -->
                     <!-- Neptune visibility container start -->
-                    <div id="neptune">
+                    <div id="neptune" class="col s4">
                         <h4>Neptune</h4>
                         <!-- Neptune icon goes in span -->
                         <span></span>
