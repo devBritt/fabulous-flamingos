@@ -23,22 +23,26 @@
         <!-- left column start -->
         <section class="col l6">
             <!-- Where and When box start -->
-            <section class="col 6">
+            <section class="col l6">
                 <h2 class="center-align">Where and When</h2>
                 <!-- location entry start -->
-                <div id="location">
-                    <label for="location-input">Enter your viewing location:</label>
-                    <input type="text" id="location-input" />
-                    <button id="set-location" class=" right -align btn pulse">Set Location</button>
-                    <p id="location-name"></p>
+                <div id="location" class="card-panel grey lighten-1">
+                    <div class="card-content">
+                        <label for="location-input" class="white-text">Enter your viewing location:</label>
+                        <input type="text" id="location-input" />
+                        <button id="set-location" class="right btn pulse">Set Location</button>
+                        <p id="location-name"></p>
+                    </div>
                 </div>
-                <!-- location entry end -->
-                <!-- date/time start -->
-                <div id="date-time">
-                    <label for="date-time-input">If you'd like to see future details, enter a date:</label>
-                    <input type="datetime-local" name="view-date" />
-                    <button id="set-date-time" class="right -align btn pulse">Set Date</button>
-                    <p id="view-date-time"></p>
+                    <!-- location entry end -->
+                    <!-- date/time start -->
+                <div id="date-time" class="card-panel grey lighten-1">
+                    <div class="card-content">
+                        <label for="date-time-input" class="white-text">If you'd like to see future details, enter a date:</label>
+                        <input type="datetime-local" class="white-text" name="view-date" />
+                        <button id="set-date-time" class="right btn pulse">Set Date</button>
+                        <p id="view-date-time"></p>
+                    </div>
                 </div>
                 <!-- date/time end -->
             </section>
@@ -134,14 +138,14 @@
         </section>
         <!-- left column end -->
         <!-- right column start -->
-        <section class="col l6">
+        <section class="col s6 pull-s2">
             <h2 class="center-align">Viewing Details</h2>
             <!-- details sections container start -->
             <div id="details-container" class="center-align">
                 <!-- left details column start -->
-                <section class="col s6">
+                <section class="col s4 push-s2">
                     <!-- Sun Cycle section start -->
-                    <section id="sun-cycle">
+                    <section id="sun-cycle" class="section">
                         <h3 class="center-align">Sun Cycle</h3>
                         <!-- sunrise container start -->
                         <div id="sunrise">
@@ -181,10 +185,10 @@
                 </section>
                 <!-- left details column end -->
                 <!-- right details column start -->
-                <section>
+                <section class="col s4 push-s4">
                     <h2 class="center-algin">Is it in Your Sky?</h2>
                     <!-- Mercury visibility container start -->
-                    <div id="mercury" class="col s4">
+                    <div id="mercury" class="col s6">
                         <h4>Mercury</h4>
                         <!-- Mercury icon goes in span -->
                         <span></span>
@@ -192,7 +196,7 @@
                     </div>
                     <!-- Mercury visibilitiy container end -->
                     <!-- Venus visibility container start -->
-                    <div id="venus" class="col s4">
+                    <div id="venus" class="col s6">
                         <h4>Venus</h4>
                         <!-- Venus icon goes in span -->
                         <span></span>
@@ -200,7 +204,7 @@
                     </div>
                     <!-- Venus visibilitiy container end -->
                     <!-- Mars visibility container start -->
-                    <div id="mars" class=" col s4">
+                    <div id="mars" class="col s6">
                         <h4>Mars</h4>
                         <!-- Mars icon goes in span -->
                         <span></span>
@@ -208,7 +212,7 @@
                     </div>
                     <!-- Mars visibilitiy container end -->
                     <!-- Jupiter visibility container start -->
-                    <div id="jupiter" class="col s4">
+                    <div id="jupiter" class="col s6">
                         <h4>Jupiter</h4>
                         <!-- Jupiter icon goes in span -->
                         <span></span>
@@ -216,7 +220,7 @@
                     </div>
                     <!-- Jupiter visibilitiy container end -->
                     <!-- Uranus visibility container start -->
-                    <div id="uranus" class="col s4">
+                    <div id="uranus" class="col s6">
                         <h4>Uranus</h4>
                         <!-- Uranus icon goes in span -->
                         <span></span>
@@ -224,7 +228,7 @@
                     </div>
                     <!-- Uranus visibilitiy container end -->
                     <!-- Neptune visibility container start -->
-                    <div id="neptune" class="col s4">
+                    <div id="neptune" class="col s6">
                         <h4>Neptune</h4>
                         <!-- Neptune icon goes in span -->
                         <span></span>
