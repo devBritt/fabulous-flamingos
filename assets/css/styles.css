@@ -19,3 +19,28 @@
 
 /* xl screens */
 /* @media screen and (min-width: 1200px) {} */
+
+body {
+    --text-color: #222;
+    --bkg-color: rgb(243, 237, 243);
+}
+
+body.dark-theme {
+    --text-color: #eee;
+    --bkg-color: #0f0f0fe7;
+}
+
+body {
+    color: var(--text-color);
+    background: var(--bkg-color);
+}
+
+#location {
+    --text-color: #eee;
+    --bkg-color: #0f0f0fe7;
+}
+
+.card1 {
+    --text-color: #eee;
+    --bkg-color: #0f0f0fe7;
+}
