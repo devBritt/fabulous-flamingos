@@ -1,24 +1,22 @@
 /* variables */
 
+header {
+    background: linear-gradient(
+        rgb(29, 2, 37) 20%,
+        rgb(46, 8, 68) 35%,
+        rgb(184, 107, 7) 120%
+      );
+      text-align: left;
+      padding: 5px;
+      margin-bottom: 5px;
+      color: aliceblue;
+}
 
-/* global styles */
+/*Toggle Dark/Light Mode styling */
 
-
-/* styles per section */
-
-
-/* MEDIA QUERIES */
-/* small screens */
-/* @media screen and (min-width: 640px) {} */
-
-/* medium screens */
-/* @media screen and (min-width: 768px) {} */
-
-/* large screens */
-/* @media screen and (min-width: 992px) {} */
-
-/* xl screens */
-/* @media screen and (min-width: 1200px) {} */
+#btn-toggle {
+    margin-top: 10px;
+}
 
 body {
     --text-color: #222;
@@ -41,6 +39,26 @@ body {
 }
 
 .card1 {
-    --text-color: #eee;
+    --text-color: rgb(245, 238, 238);
     --bkg-color: #0f0f0fe7;
 }
+
+
+/* global styles */
+
+
+/* styles per section */
+
+
+/* MEDIA QUERIES */
+/* small screens */
+/* @media screen and (min-width: 640px) {} */
+
+/* medium screens */
+/* @media screen and (min-width: 768px) {} */
+
+/* large screens */
+/* @media screen and (min-width: 992px) {} */
+
+/* xl screens */
+/* @media screen and (min-width: 1200px) {} */
