@@ -21,5 +21,4 @@ function createForecastCards() {
 
 // event listeners
 
-
 // on load function calls
