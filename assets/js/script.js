@@ -18,8 +18,13 @@ function createForecastCards() {
 
 // event handlers
 
-
 // event listeners
 
-
 // on load function calls
+//Function to toggle dark mode
+const btn = document.querySelector("#btn-toggle")
+
+btn.addEventListener("click", function() {
+    document.body.classList.toggle("dark-theme");
+    console.log("Hello");
+});
