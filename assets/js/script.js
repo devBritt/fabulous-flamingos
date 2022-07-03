@@ -21,6 +21,11 @@ var dateInputEl = document.querySelector("#date-time-input");
 // functions
 // function to get sun/moon cycle
 function getSunMoonCycle(location, date) {
+    // html elements to be updated
+    var sunriseEl = document.querySelector("#sunrise-time");
+    var sunsetEl = document.querySelector("#sunset-time");
+    var moonriseEl = document.querySelector("#moonrise-time");
+    var moonsetEl = document.querySelector("#moonset-time");
     // create call string
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&exclude=current,minutely,hourly,alerts&appid=" + weatherApiKey;
     // create date
@@ -28,7 +33,37 @@ function getSunMoonCycle(location, date) {
     // date from input
     var inputDate = new Date(date);
     // calculate number of days from current date
-    var numDays = Math.ceil((inputDate.getTime() - currentDate.getTime())/unixSecPerDay/1000);
+    var numDays = Math.abs(Math.ceil((inputDate.getTime() - currentDate.getTime())/unixSecPerDay/1000));
+
+    // request weather data from open weather api
+    fetch(apiUrl)
+    .then(function(response) {
+        response.json()
+        .then(function(data) {
+            // update html elements value
+            sunriseEl.textContent = formatTime(data.daily[numDays].sunrise);
+            sunsetEl.textContent = formatTime(data.daily[numDays].sunset);
+            moonriseEl.textContent = formatTime(data.daily[numDays].moonrise);
+            moonsetEl.textContent = formatTime(data.daily[numDays].moonset);
+        });
+    });
+}
+
+// function to format sun/moon cycle times and return as object
+function formatTime(time) {
+    // format time as UTC string
+    var utcTime = new Date();
+    // convert from seconds to milliseconds
+    utcTime.setTime(time*1000);
+    // get string of date
+    var dateString = utcTime.toLocaleString();
+    // extract time from dateString
+    dateString = dateString.split(" ");
+    // format time string
+    var timeString = dateString[1].split(":");
+    timeString = timeString[0] + ":" + timeString[1] + " " + dateString[2];
+    
+    return timeString;
 }
 
 // function to retrieve location
@@ -123,4 +158,4 @@ dateBtnEl.addEventListener("click", function() {
 });
 
 // on load function calls
-getSunMoonCycle(loadFromLocal("location"), "2022-07-04T00:00");
+getSunMoonCycle(loadFromLocal("location"), Date());
