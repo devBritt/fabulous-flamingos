@@ -194,18 +194,25 @@ darkModeEl.addEventListener("click", function() {
 locationBtnEl.addEventListener("click", function() {
     // retrieve location from location input
     var location = getLocation();
-    // format location as latitude/longitude
-    formatLocation(location);
-    getSunMoonCycle(loadFromLocal("location"), Date());
-    // clear input value
-    locationInputEl.value = "";
+    // verify location isn't empty
+    if (location) {
+        // format location as latitude/longitude
+        formatLocation(location);
+        getSunMoonCycle(loadFromLocal("location"), Date());
+        // clear input value
+        locationInputEl.value = "";
+    }
 });
 dateBtnEl.addEventListener("click", function() {
     // retrieve date/time from date/time input
     var dateTime = getDateTime();
-    getSunMoonCycle(loadFromLocal("location"), dateTime);
-    // clear input value
-    dateInputEl.value = "";
+    // verify dateTime isn't empty
+    if (dateTime) {
+        // update sun/moon cycle times
+        getSunMoonCycle(loadFromLocal("location"), dateTime);
+        // clear input value
+        dateInputEl.value = "";
+    };
 });
 
 // on load function calls
