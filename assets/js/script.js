@@ -13,8 +13,9 @@ var darkModeEl = document.querySelector("#dark-mode-toggle");
 var locationBtnEl = document.querySelector("#set-location");
 // date button element
 var dateBtnEl = document.querySelector("#set-date-time");
-// location input element
-var locationInputEl = document.querySelector("#location-input");
+// location input elements
+var cityInputEl = document.querySelector("#city-input");
+var stateInputEl = document.querySelector("#state-input");
 // date input element
 var dateInputEl = document.querySelector("#date-time-input");
 
@@ -63,11 +64,6 @@ function getTimeString(time) {
     timeString = timeString[0] + ":" + timeString[1] + " " + dateString[2];
     
     return timeString;
-}
-
-// function to retrieve location
-function getLocation() {
-    return locationInputEl.value;
 }
 
 // function to format location as latitude/longitude
@@ -192,16 +188,17 @@ darkModeEl.addEventListener("click", function() {
     document.body.classList.toggle("dark-theme");
 });
 locationBtnEl.addEventListener("click", function() {
-    // retrieve location from location input
-    var location = getLocation();
-    // verify location isn't empty
-    if (location) {
+    var location = "";
+    // verify text inputs are not empty and contain no numbers
+    if (cityInputEl.value && !cityInputEl.value.match(/\d/) && stateInputEl.value && !stateInputEl.value.match(/\d/)) {
+        location = cityInputEl.value.trim() + ", " + stateInputEl.value.trim().toUpperCase();
         // format location as latitude/longitude
         formatLocation(location);
-        getSunMoonCycle(loadFromLocal("location"), Date());
+        getSunMoonCycle(location, getDateTime());
         // clear input value
-        locationInputEl.value = "";
-    }
+        cityInputEl.value = "";
+        stateInputEl.value = "";
+    };
 });
 dateBtnEl.addEventListener("click", function() {
     // retrieve date/time from date/time input
