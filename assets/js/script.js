@@ -41,16 +41,16 @@ function getSunMoonCycle(location, date) {
         response.json()
         .then(function(data) {
             // update html elements value
-            sunriseEl.textContent = formatTime(data.daily[numDays].sunrise);
-            sunsetEl.textContent = formatTime(data.daily[numDays].sunset);
-            moonriseEl.textContent = formatTime(data.daily[numDays].moonrise);
-            moonsetEl.textContent = formatTime(data.daily[numDays].moonset);
+            sunriseEl.textContent = getTimeString(data.daily[numDays].sunrise);
+            sunsetEl.textContent = getTimeString(data.daily[numDays].sunset);
+            moonriseEl.textContent = getTimeString(data.daily[numDays].moonrise);
+            moonsetEl.textContent = getTimeString(data.daily[numDays].moonset);
         });
     });
 }
 
 // function to format sun/moon cycle times and return as object
-function formatTime(time) {
+function getTimeString(time) {
     // format time as UTC string
     var utcTime = new Date();
     // convert from seconds to milliseconds
@@ -126,19 +126,41 @@ function getDateTime() {
     }
 }
 
-// function to set available dates in the date picker
-function setDates() {
+// function to set the default value of datetime input
+function setDateInputDefault() {
+    // datetime input reference
     var dateInputEl = document.querySelector("#date-time-input");
     var currentDateTime = new Date();
     var dateTime = currentDateTime.toISOString().split(".");
-    // extract ISO date
+    // extract ISO date (yyyy-mm-dd)
     dateTime = dateTime[0].split("T")[0];
     // format date for datetime input (yyyy-mm-ddThh:mm)
     dateTime = dateTime + "T" + currentDateTime.toTimeString().slice(0,5);
-    console.log(dateTime);
     // set date picker to current date/time as default
     dateInputEl.setAttribute("value", dateTime);
-    console.log(dateInputEl);
+}
+
+// function to set the min/max dates that can be picked via datetime input
+function setMinMaxDates() {
+    // datetime input reference
+    var dateInputEl = document.querySelector("#date-time-input");
+    var currentDateTime = new Date();
+    var currentDateTimeString = currentDateTime.toISOString().split(".");
+    // add 8 days to current time for max date
+    var maxDateTime = new Date(currentDateTime.getTime() + (8*unixSecPerDay*1000));
+    var maxDateTimeString = maxDateTime.toISOString().split(".");
+    
+    // extract ISO date (yyyy-mm-dd)
+    currentDateTimeString = currentDateTimeString[0].split("T")[0];
+    maxDateTimeString = maxDateTimeString[0].split("T")[0];
+
+    // format date for datetime input (yyyy-mm-ddThh:mm)
+    currentDateTimeString = currentDateTimeString + "T" + currentDateTime.toTimeString().slice(0,5);
+    maxDateTimeString = maxDateTimeString + "T" + maxDateTime.toTimeString().slice(0,5);
+    
+    // set datetime input min and max attributes
+    dateInputEl.setAttribute("min", currentDateTimeString);
+    dateInputEl.setAttribute("max", maxDateTimeString);   
 }
 
 // function to save to local storage
@@ -192,5 +214,7 @@ dateBtnEl.addEventListener("click", function() {
 // on load function calls
 // get sunrise, sunset, moonrise, and moonset times for current day and display
 getSunMoonCycle(loadFromLocal("location"), Date());
-// set available dates to choose from in date picker
-setDates();
+// set datetime input default value as current date and time
+setDateInputDefault();
+// set datetime input min and max dates that can be selected
+setMinMaxDates();
