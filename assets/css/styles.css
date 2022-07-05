@@ -54,18 +54,18 @@ body {
     opacity: 80%;
 }
 
-input[type=text] {
+
+
+
+/* styles per section */
+#location-input {
     width: 100%;
     background-color: white;
     margin: 8px 0;
     box-sizing: border-box;
-    border-bottom: 2px solid green;
-    color: white;
-    
+    border: 2px solid rgb(92, 10, 51);
+    color: black;
   }
-
-
-/* styles per section */
 
 
 
