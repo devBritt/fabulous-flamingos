@@ -110,17 +110,6 @@ function formatLocation(input) {
     });
 }
 
-// function to retrieve date/time
-function getDateTime() {
-    var dateTime = new Date (dateInputEl.value);
-    // check for empty input
-    if (!dateTime) {
-        // TODO: add modal to display error message for empty input
-    } else {
-        return dateTime;
-    }
-}
-
 // function to set the default value of datetime input
 function setDateInputDefault() {
     var currentDateTime = new Date();
@@ -158,7 +147,11 @@ function getDateTimeString(date) {
 
 // function to save to local storage
 function saveToLocal(type, obj) {
-    localStorage.setItem(type, JSON.stringify(obj));
+    if (type === "location") {
+        localStorage.setItem(type, JSON.stringify(obj));
+    } else if (type === "datetime") {
+        localStorage.setItem(type, JSON.stringify(obj.getTime()));
+    };
 }
 
 // function to load from local storage
@@ -194,19 +187,18 @@ locationBtnEl.addEventListener("click", function() {
         location = cityInputEl.value.trim() + ", " + stateInputEl.value.trim().toUpperCase();
         // format location as latitude/longitude
         formatLocation(location);
-        getSunMoonCycle(location, getDateTime());
+        getSunMoonCycle(location, loadFromLocal("datetime"));
         // clear input value
         cityInputEl.value = "";
         stateInputEl.value = "";
     };
 });
 dateBtnEl.addEventListener("click", function() {
-    // retrieve date/time from date/time input
-    var dateTime = getDateTime();
     // verify dateTime isn't empty
-    if (dateTime) {
+    if (dateInputEl.value) {
+        saveToLocal("datetime", new Date(dateInputEl.value));
         // update sun/moon cycle times
-        getSunMoonCycle(loadFromLocal("location"), dateTime);
+        getSunMoonCycle(loadFromLocal("location"), loadFromLocal("datetime"));
         // clear input value
         dateInputEl.value = "";
     };
@@ -219,3 +211,5 @@ getSunMoonCycle(loadFromLocal("location"), Date());
 setDateInputDefault();
 // set datetime input min and max dates that can be selected
 setMinMaxDates();
+// set default time in local storage to current time
+saveToLocal("datetime", new Date());
