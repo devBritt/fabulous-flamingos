@@ -2,7 +2,8 @@
 // unix seconds per day
 const unixSecPerDay = 86400;
 // API keys/urls
-const weatherApiKey = "57bb6de1daa898857366ae01e5539fb5";
+const weatherApiKey = 'd96eaa93b402b86cc39119d34076f8b0';
+
 // where the iss at? does not require a key
 // base url is to get information about iss at a given time
 const issApiBaseUrl = "https://api.wheretheiss.at/v1/satellites/25544/positions?timestamps=";
@@ -45,8 +46,75 @@ function getSunMoonCycle(location, date) {
             sunsetEl.textContent = getTimeString(data.daily[numDays].sunset);
             moonriseEl.textContent = getTimeString(data.daily[numDays].moonrise);
             moonsetEl.textContent = getTimeString(data.daily[numDays+1].moonset);
+            
+            // determine moon phase name/icon needed
+            getMoonPhaseInfo(data.daily[numDays].moon_phase);
+            // update icon
+            // update name
         });
     });
+}
+
+// function to determine moon phase name/icon needed
+function getMoonPhaseInfo(phaseNum) {
+    // moon phase elemenets
+    var moonphaseiconEl = document.querySelector("#phase-icon");
+    var moonphasenameEl = document.querySelector("#phase-name");
+    
+    // create img tag
+    var iconEl = document.createElement("img");
+    
+    // determine moon phase based on phase number
+    if(phaseNum === 0 || phaseNum === 1) {
+        // set icon images
+        iconEl.src = "assets/images/standard-icons/svg/new-moon.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "New Moon";
+    } else if (phaseNum > 0 && phaseNum < 0.25) { 
+        iconEl.src = "assets/images/standard-icons/svg/wax-c-wan-g.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "Waxing Cresent";
+    } else if (phaseNum === 0.25) {
+        iconEl.src = "assets/images/standard-icons/svg/first-quarter.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "First Quarter";
+    } else if (phaseNum > 0.25 && phaseNum < 0.5) {
+        iconEl.src = "assets/images/standard-icons/svg/wax-g-wan-c.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "Waxing Gibous";
+    } else if (phaseNum === 0.5) {
+        iconEl.src = "assets/images/standard-icons/svg/full-moon.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "Full Moon";
+    } else if (phaseNum > 0.5 && phaseNum < 0.75) {
+        iconEl.src = "assets/images/standard-icons/svg/wax-c-wan-g.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "Waning Gibous";
+    } else if (phaseNum === 0.75){
+        iconEl.src = "assets/images/standard-icons/svg/last-quarter.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "Last Quarter";
+    } else if (phaseNum > 0.75 && phaseNum < 1) {
+        iconEl.src = "assets/images/standard-icons/svg/wax-g-wan-c.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "Waning Cresent";
+    };
 }
 
 // function to format sun/moon cycle times and return as object
