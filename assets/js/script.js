@@ -13,8 +13,9 @@ var darkModeEl = document.querySelector("#dark-mode-toggle");
 var locationBtnEl = document.querySelector("#set-location");
 // date button element
 var dateBtnEl = document.querySelector("#set-date-time");
-// location input element
-var locationInputEl = document.querySelector("#location-input");
+// location input elements
+var cityInputEl = document.querySelector("#city-input");
+var stateInputEl = document.querySelector("#state-input");
 // date input element
 var dateInputEl = document.querySelector("#date-time-input");
 
@@ -34,23 +35,22 @@ function getSunMoonCycle(location, date) {
     var inputDate = new Date(date);
     // calculate number of days from current date
     var numDays = Math.abs(Math.ceil((inputDate.getTime() - currentDate.getTime())/unixSecPerDay/1000));
-
     // request weather data from open weather api
     fetch(apiUrl)
     .then(function(response) {
         response.json()
         .then(function(data) {
             // update html elements value
-            sunriseEl.textContent = formatTime(data.daily[numDays].sunrise);
-            sunsetEl.textContent = formatTime(data.daily[numDays].sunset);
-            moonriseEl.textContent = formatTime(data.daily[numDays].moonrise);
-            moonsetEl.textContent = formatTime(data.daily[numDays].moonset);
+            sunriseEl.textContent = getTimeString(data.daily[numDays].sunrise);
+            sunsetEl.textContent = getTimeString(data.daily[numDays].sunset);
+            moonriseEl.textContent = getTimeString(data.daily[numDays].moonrise);
+            moonsetEl.textContent = getTimeString(data.daily[numDays+1].moonset);
         });
     });
 }
 
 // function to format sun/moon cycle times and return as object
-function formatTime(time) {
+function getTimeString(time) {
     // format time as UTC string
     var utcTime = new Date();
     // convert from seconds to milliseconds
@@ -64,11 +64,6 @@ function formatTime(time) {
     timeString = timeString[0] + ":" + timeString[1] + " " + dateString[2];
     
     return timeString;
-}
-
-// function to retrieve location
-function getLocation() {
-    return locationInputEl.value;
 }
 
 // function to format location as latitude/longitude
@@ -115,26 +110,70 @@ function formatLocation(input) {
     });
 }
 
-// function to retrieve date/time
-function getDateTime() {
-    var dateTime = dateInputEl.value;
-    // check for empty input
-    if (!dateTime) {
-        // TODO: add modal to display error message for empty input
-    } else {
-        return dateTime;
-    }
+// function to set the default value of datetime input
+function setDateInputDefault() {
+    var currentDateTime = new Date();
+    var dateTime = getDateTimeString(currentDateTime);
+    
+    // set date picker to current date/time as default
+    dateInputEl.setAttribute("value", dateTime);
+}
+
+// function to set the min/max dates that can be picked via datetime input
+function setMinMaxDates() {
+    // datetime input reference
+    var currentDateTime = new Date();
+    var currentDateTimeString = getDateTimeString(currentDateTime);
+    // add 4 days to current time for max date (5 days of data)
+    var maxDateTime = new Date(currentDateTime.getTime() + (4*unixSecPerDay*1000));
+    var maxDateTimeString = getDateTimeString(maxDateTime);
+    
+    // set datetime input min and max attributes
+    dateInputEl.setAttribute("min", currentDateTimeString);
+    dateInputEl.setAttribute("max", maxDateTimeString);   
+}
+
+// function to format date/time string for datetime input attributes
+function getDateTimeString(date) {
+    // format date as ISO string
+    var formattedString = date.toISOString().split(".");
+    // extract ISO date (yyyy-mm-dd)
+    formattedString = formattedString[0].split("T")[0];
+    // add time to string
+    formattedString = formattedString + "T" + date.toTimeString().slice(0, 5);
+    
+    return formattedString;
 }
 
 // function to save to local storage
 function saveToLocal(type, obj) {
-    localStorage.setItem(type, JSON.stringify(obj));
+    if (type === "location") {
+        localStorage.setItem(type, JSON.stringify(obj));
+    } else if (type === "datetime") {
+        localStorage.setItem(type, JSON.stringify(obj.getTime()));
+    };
 }
 
 // function to load from local storage
 function loadFromLocal(type) {
-    return JSON.parse(localStorage.getItem(type));
-}
+    // local storage contents
+    var loadObj = JSON.parse(localStorage.getItem(type));
+    
+    // check for loadObj contents
+    if (loadObj) {
+        return loadObj;
+    }
+    // if loadObj is empty, check for type request and provide default data
+    else if (type === "location") {
+        // default location Cherry Springs State Park, Pennsylvania
+        loadObj = {
+            latitude: 41.665646,
+            longitude: -77.828094
+        };
+        saveToLocal(type, loadObj);
+        return loadObj;
+    };
+};
 
 // event listeners
 //Function to toggle dark mode
@@ -142,20 +181,33 @@ darkModeEl.addEventListener("click", function() {
     document.body.classList.toggle("dark-theme");
 });
 locationBtnEl.addEventListener("click", function() {
-    // retrieve location from location input
-    var location = getLocation();
-    // format location as latitude/longitude
-    formatLocation(location);
-    // clear input value
-    locationInputEl.value = "";
+    var location = "";
+    // verify text inputs are not empty and contain no numbers
+    if (cityInputEl.value && !cityInputEl.value.match(/\d/) && stateInputEl.value && !stateInputEl.value.match(/\d/)) {
+        location = cityInputEl.value.trim() + ", " + stateInputEl.value.trim().toUpperCase();
+        // format location as latitude/longitude
+        formatLocation(location);
+        getSunMoonCycle(location, loadFromLocal("datetime"));
+        // clear input value
+        cityInputEl.value = "";
+        stateInputEl.value = "";
+    };
 });
 dateBtnEl.addEventListener("click", function() {
-    // retrieve date/time from date/time input
-    var dateTime = getDateTime();
-    console.log(dateTime);
-    // clear input value
-    dateInputEl.value = "";
+    // verify dateTime isn't empty
+    if (dateInputEl.value) {
+        saveToLocal("datetime", new Date(dateInputEl.value));
+        // update sun/moon cycle times
+        getSunMoonCycle(loadFromLocal("location"), loadFromLocal("datetime"));
+        // clear input value
+        dateInputEl.value = "";
+    };
 });
 
 // on load function calls
+// get sunrise, sunset, moonrise, and moonset times for current day and display
 getSunMoonCycle(loadFromLocal("location"), Date());
+// set datetime input default value as current date and time
+setDateInputDefault();
+// set datetime input min and max dates that can be selected
+setMinMaxDates();
