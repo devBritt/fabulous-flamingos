@@ -49,8 +49,6 @@ function getSunMoonCycle(location, date) {
             
             // determine moon phase name/icon needed
             getMoonPhaseInfo(data.daily[numDays].moon_phase);
-            // update icon
-            // update name
         });
     });
 }
