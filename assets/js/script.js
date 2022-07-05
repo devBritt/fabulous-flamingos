@@ -126,6 +126,11 @@ function getDateTime() {
     }
 }
 
+// function to set available dates in the date picker
+// function setDates(today) {
+
+// }
+
 // function to save to local storage
 function saveToLocal(type, obj) {
     localStorage.setItem(type, JSON.stringify(obj));
@@ -139,14 +144,17 @@ function loadFromLocal(type) {
     // check for loadObj contents
     if (loadObj) {
         return loadObj;
-    } else {
+    }
+    // if loadObj is empty, check for type request and provide default data
+    else if (type === "location") {
         // default location Cherry Springs State Park, Pennsylvania
         loadObj = {
             latitude: 41.665646,
             longitude: -77.828094
         };
+        saveToLocal(type, loadObj);
         return loadObj;
-    }
+    };
 };
 
 // event listeners
@@ -159,6 +167,7 @@ locationBtnEl.addEventListener("click", function() {
     var location = getLocation();
     // format location as latitude/longitude
     formatLocation(location);
+    getSunMoonCycle(loadFromLocal("location"), Date());
     // clear input value
     locationInputEl.value = "";
 });
@@ -171,4 +180,7 @@ dateBtnEl.addEventListener("click", function() {
 });
 
 // on load function calls
+// get sunrise, sunset, moonrise, and moonset times for current day and display
 getSunMoonCycle(loadFromLocal("location"), Date());
+// set available dates to choose from in date picker
+// setDates(Date());
