@@ -133,8 +133,21 @@ function saveToLocal(type, obj) {
 
 // function to load from local storage
 function loadFromLocal(type) {
-    return JSON.parse(localStorage.getItem(type));
-}
+    // local storage contents
+    var loadObj = JSON.parse(localStorage.getItem(type));
+    
+    // check for loadObj contents
+    if (loadObj) {
+        return loadObj;
+    } else {
+        // default location Cherry Springs State Park, Pennsylvania
+        loadObj = {
+            latitude: 41.665646,
+            longitude: -77.828094
+        };
+        return loadObj;
+    }
+};
 
 // event listeners
 //Function to toggle dark mode
