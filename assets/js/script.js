@@ -127,9 +127,19 @@ function getDateTime() {
 }
 
 // function to set available dates in the date picker
-// function setDates(today) {
-
-// }
+function setDates() {
+    var dateInputEl = document.querySelector("#date-time-input");
+    var currentDateTime = new Date();
+    var dateTime = currentDateTime.toISOString().split(".");
+    // extract ISO date
+    dateTime = dateTime[0].split("T")[0];
+    // format date for datetime input (yyyy-mm-ddThh:mm)
+    dateTime = dateTime + "T" + currentDateTime.toTimeString().slice(0,5);
+    console.log(dateTime);
+    // set date picker to current date/time as default
+    dateInputEl.setAttribute("value", dateTime);
+    console.log(dateInputEl);
+}
 
 // function to save to local storage
 function saveToLocal(type, obj) {
@@ -183,4 +193,4 @@ dateBtnEl.addEventListener("click", function() {
 // get sunrise, sunset, moonrise, and moonset times for current day and display
 getSunMoonCycle(loadFromLocal("location"), Date());
 // set available dates to choose from in date picker
-// setDates(Date());
+setDates();
