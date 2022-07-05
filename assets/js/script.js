@@ -131,11 +131,8 @@ function setDateInputDefault() {
     // datetime input reference
     var dateInputEl = document.querySelector("#date-time-input");
     var currentDateTime = new Date();
-    var dateTime = currentDateTime.toISOString().split(".");
-    // extract ISO date (yyyy-mm-dd)
-    dateTime = dateTime[0].split("T")[0];
-    // format date for datetime input (yyyy-mm-ddThh:mm)
-    dateTime = dateTime + "T" + currentDateTime.toTimeString().slice(0,5);
+    var dateTime = getDateTimeString(currentDateTime);
+    
     // set date picker to current date/time as default
     dateInputEl.setAttribute("value", dateTime);
 }
@@ -145,22 +142,26 @@ function setMinMaxDates() {
     // datetime input reference
     var dateInputEl = document.querySelector("#date-time-input");
     var currentDateTime = new Date();
-    var currentDateTimeString = currentDateTime.toISOString().split(".");
+    var currentDateTimeString = getDateTimeString(currentDateTime);
     // add 8 days to current time for max date
     var maxDateTime = new Date(currentDateTime.getTime() + (8*unixSecPerDay*1000));
-    var maxDateTimeString = maxDateTime.toISOString().split(".");
-    
-    // extract ISO date (yyyy-mm-dd)
-    currentDateTimeString = currentDateTimeString[0].split("T")[0];
-    maxDateTimeString = maxDateTimeString[0].split("T")[0];
-
-    // format date for datetime input (yyyy-mm-ddThh:mm)
-    currentDateTimeString = currentDateTimeString + "T" + currentDateTime.toTimeString().slice(0,5);
-    maxDateTimeString = maxDateTimeString + "T" + maxDateTime.toTimeString().slice(0,5);
+    var maxDateTimeString = getDateTimeString(maxDateTime);
     
     // set datetime input min and max attributes
     dateInputEl.setAttribute("min", currentDateTimeString);
     dateInputEl.setAttribute("max", maxDateTimeString);   
+}
+
+// function to format date/time string for datetime input attributes
+function getDateTimeString(date) {
+    // format date as ISO string
+    var formattedString = date.toISOString().split(".");
+    // extract ISO date (yyyy-mm-dd)
+    formattedString = formattedString[0].split("T")[0];
+    // add time to string
+    formattedString = formattedString + "T" + date.toTimeString().slice(0, 5);
+    
+    return formattedString;
 }
 
 // function to save to local storage
