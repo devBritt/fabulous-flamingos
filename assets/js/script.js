@@ -34,7 +34,6 @@ function getSunMoonCycle(location, date) {
     var inputDate = new Date(date);
     // calculate number of days from current date
     var numDays = Math.abs(Math.ceil((inputDate.getTime() - currentDate.getTime())/unixSecPerDay/1000));
-
     // request weather data from open weather api
     fetch(apiUrl)
     .then(function(response) {
@@ -44,7 +43,7 @@ function getSunMoonCycle(location, date) {
             sunriseEl.textContent = getTimeString(data.daily[numDays].sunrise);
             sunsetEl.textContent = getTimeString(data.daily[numDays].sunset);
             moonriseEl.textContent = getTimeString(data.daily[numDays].moonrise);
-            moonsetEl.textContent = getTimeString(data.daily[numDays].moonset);
+            moonsetEl.textContent = getTimeString(data.daily[numDays+1].moonset);
         });
     });
 }
@@ -117,7 +116,7 @@ function formatLocation(input) {
 
 // function to retrieve date/time
 function getDateTime() {
-    var dateTime = dateInputEl.value;
+    var dateTime = new Date (dateInputEl.value);
     // check for empty input
     if (!dateTime) {
         // TODO: add modal to display error message for empty input
@@ -128,8 +127,6 @@ function getDateTime() {
 
 // function to set the default value of datetime input
 function setDateInputDefault() {
-    // datetime input reference
-    var dateInputEl = document.querySelector("#date-time-input");
     var currentDateTime = new Date();
     var dateTime = getDateTimeString(currentDateTime);
     
@@ -140,11 +137,10 @@ function setDateInputDefault() {
 // function to set the min/max dates that can be picked via datetime input
 function setMinMaxDates() {
     // datetime input reference
-    var dateInputEl = document.querySelector("#date-time-input");
     var currentDateTime = new Date();
     var currentDateTimeString = getDateTimeString(currentDateTime);
-    // add 8 days to current time for max date
-    var maxDateTime = new Date(currentDateTime.getTime() + (8*unixSecPerDay*1000));
+    // add 4 days to current time for max date (5 days of data)
+    var maxDateTime = new Date(currentDateTime.getTime() + (4*unixSecPerDay*1000));
     var maxDateTimeString = getDateTimeString(maxDateTime);
     
     // set datetime input min and max attributes
@@ -207,7 +203,7 @@ locationBtnEl.addEventListener("click", function() {
 dateBtnEl.addEventListener("click", function() {
     // retrieve date/time from date/time input
     var dateTime = getDateTime();
-    console.log(dateTime);
+    getSunMoonCycle(loadFromLocal("location"), dateTime);
     // clear input value
     dateInputEl.value = "";
 });
