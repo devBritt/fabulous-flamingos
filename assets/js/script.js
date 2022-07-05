@@ -211,5 +211,3 @@ getSunMoonCycle(loadFromLocal("location"), Date());
 setDateInputDefault();
 // set datetime input min and max dates that can be selected
 setMinMaxDates();
-// set default time in local storage to current time
-saveToLocal("datetime", new Date());
