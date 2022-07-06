@@ -145,6 +145,22 @@ function getDateTimeString(date) {
     return formattedString;
 }
 
+// function to update planet card details
+function updatePlanetCards(location) {
+    // planets section selector
+    var planetsSectionEl = document.querySelector("#planets");
+    var planetChildren = planetsSectionEl.children;
+
+    for (var i = 1; i < planetChildren.length; i++) {
+        getPlanetInfo(planetChildren[i]);
+    }
+};
+
+// function to calculate if a planet is visible
+function getPlanetInfo(planetInfo) {
+    
+}
+
 // function to save to local storage
 function saveToLocal(type, obj) {
     if (type === "location") {
@@ -207,6 +223,8 @@ dateBtnEl.addEventListener("click", function() {
 // on load function calls
 // get sunrise, sunset, moonrise, and moonset times for current day and display
 getSunMoonCycle(loadFromLocal("location"), Date());
+// calculate and display if planets are above horizon
+updatePlanetCards(loadFromLocal("location"));
 // set datetime input default value as current date and time
 setDateInputDefault();
 // set datetime input min and max dates that can be selected
