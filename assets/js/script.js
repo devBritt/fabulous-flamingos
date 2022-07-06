@@ -21,6 +21,7 @@ var stateInputEl = document.querySelector("#state-input");
 var dateInputEl = document.querySelector("#date-time-input");
 
 // functions
+
 //get weather function
 function getWeather(date, visibility) {
     var weatherEl = document.querySelector("#weather-date", "#weather-temp");
