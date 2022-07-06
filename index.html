@@ -14,8 +14,8 @@
 
 <body>
     <!-- header start -->
-    <header>
-        <h1>Astrowatch.io</h1>
+    <header class="row">
+        <h1 class="col l4 m6 s12">Astrowatch.io</h1>
         <!-- dark mode toggle start -->
         <img src="./assets/images/standard-icons/svg/dark-mode.svg" alt="Dark mode toggle" id="dark-mode-toggle" />
         <!-- dark mode toggle end -->
@@ -145,12 +145,12 @@
                             </div>
                             <!-- forecast card end -->
                             <!-- forecast card start -->
-                            <div class="card-panel grey darken">
+                            <div class="card-panel grey darken" id="weather">
                                 <article class="forecast-card">
-                                    <p class="weather-date white-text">Date</p>
+                                    <p class="weather-date white-text" id="weather-date">Date</p>
                                     <!-- weather icon goes in span -->
                                     <span class="weather-icon"></span>
-                                    <p class="temperature white-text">Temp</p>
+                                    <p class="temperature white-text" id="weather-temp">Temp</p>
                                 </article>
                             </div>
                             <!-- forecast card end -->

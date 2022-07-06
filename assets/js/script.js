@@ -21,6 +21,21 @@ var stateInputEl = document.querySelector("#state-input");
 var dateInputEl = document.querySelector("#date-time-input");
 
 // functions
+//get weather function
+function getWeather(date, visibility) {
+    var weatherEl = document.querySelector("#weather-date", "#weather-temp");
+    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&exclude=current,minutely,hourly,alerts&appid=" + weatherApiKey;
+
+    fetch(apiURl)
+        .then(function (response) {
+            response.json()
+                .then(function (data) {
+                    weatherEl.textContent = getTimeString(data.daily.temp.visibility);
+                })
+        });
+
+}
+
 // function to get sun/moon cycle
 function getSunMoonCycle(location, date) {
     // html elements to be updated
@@ -35,22 +50,22 @@ function getSunMoonCycle(location, date) {
     // date from input
     var inputDate = new Date(date);
     // calculate number of days from current date
-    var numDays = Math.abs(Math.ceil((inputDate.getTime() - currentDate.getTime())/unixSecPerDay/1000));
+    var numDays = Math.abs(Math.ceil((inputDate.getTime() - currentDate.getTime()) / unixSecPerDay / 1000));
     // request weather data from open weather api
     fetch(apiUrl)
-    .then(function(response) {
-        response.json()
-        .then(function(data) {
-            // update html elements value
-            sunriseEl.textContent = getTimeString(data.daily[numDays].sunrise);
-            sunsetEl.textContent = getTimeString(data.daily[numDays].sunset);
-            moonriseEl.textContent = getTimeString(data.daily[numDays].moonrise);
-            moonsetEl.textContent = getTimeString(data.daily[numDays+1].moonset);
-            
-            // determine moon phase name/icon needed
-            getMoonPhaseInfo(data.daily[numDays].moon_phase);
+        .then(function (response) {
+            response.json()
+                .then(function (data) {
+                    // update html elements value
+                    sunriseEl.textContent = getTimeString(data.daily[numDays].sunrise);
+                    sunsetEl.textContent = getTimeString(data.daily[numDays].sunset);
+                    moonriseEl.textContent = getTimeString(data.daily[numDays].moonrise);
+                    moonsetEl.textContent = getTimeString(data.daily[numDays + 1].moonset);
+
+                    // determine moon phase name/icon needed
+                    getMoonPhaseInfo(data.daily[numDays].moon_phase);
+                });
         });
-    });
 }
 
 // function to determine moon phase name/icon needed
@@ -58,19 +73,19 @@ function getMoonPhaseInfo(phaseNum) {
     // moon phase elemenets
     var moonphaseiconEl = document.querySelector("#phase-icon");
     var moonphasenameEl = document.querySelector("#phase-name");
-    
+
     // create img tag
     var iconEl = document.createElement("img");
-    
+
     // determine moon phase based on phase number
-    if(phaseNum === 0 || phaseNum === 1) {
+    if (phaseNum === 0 || phaseNum === 1) {
         // set icon images
         iconEl.src = "assets/images/standard-icons/svg/new-moon.svg";
         // append icon element to span
         moonphaseiconEl.appendChild(iconEl);
         // update moon phase name text
         moonphasenameEl.textContent = "New Moon";
-    } else if (phaseNum > 0 && phaseNum < 0.25) { 
+    } else if (phaseNum > 0 && phaseNum < 0.25) {
         iconEl.src = "assets/images/standard-icons/svg/wax-c-wan-g.svg";
         // append icon element to span
         moonphaseiconEl.appendChild(iconEl);
@@ -100,7 +115,7 @@ function getMoonPhaseInfo(phaseNum) {
         moonphaseiconEl.appendChild(iconEl);
         // update moon phase name text
         moonphasenameEl.textContent = "Waning Gibous";
-    } else if (phaseNum === 0.75){
+    } else if (phaseNum === 0.75) {
         iconEl.src = "assets/images/standard-icons/svg/last-quarter.svg";
         // append icon element to span
         moonphaseiconEl.appendChild(iconEl);
@@ -120,7 +135,7 @@ function getTimeString(time) {
     // format time as UTC string
     var utcTime = new Date();
     // convert from seconds to milliseconds
-    utcTime.setTime(time*1000);
+    utcTime.setTime(time * 1000);
     // get string of date
     var dateString = utcTime.toLocaleString();
     // extract time from dateString
@@ -128,7 +143,7 @@ function getTimeString(time) {
     // format time string
     var timeString = dateString[1].split(":");
     timeString = timeString[0] + ":" + timeString[1] + " " + dateString[2];
-    
+
     return timeString;
 }
 
@@ -159,28 +174,28 @@ function formatLocation(input) {
 
     // request location formatting
     fetch(apiUrl)
-    .then(function(response) {
-        response.json()
-        .then(function(data) {
-            // check for array
-            if (Array.isArray(data)) {
-                locationObj.latitude = data[0].lat;
-                locationObj.longitude = data[0].lon;
-            } else {
-                locationObj.latitude = data.lat;
-                locationObj.longitude = data.lon;
-            };
-            // save input to local storage
-            saveToLocal("location", locationObj);
+        .then(function (response) {
+            response.json()
+                .then(function (data) {
+                    // check for array
+                    if (Array.isArray(data)) {
+                        locationObj.latitude = data[0].lat;
+                        locationObj.longitude = data[0].lon;
+                    } else {
+                        locationObj.latitude = data.lat;
+                        locationObj.longitude = data.lon;
+                    };
+                    // save input to local storage
+                    saveToLocal("location", locationObj);
+                });
         });
-    });
 }
 
 // function to set the default value of datetime input
 function setDateInputDefault() {
     var currentDateTime = new Date();
     var dateTime = getDateTimeString(currentDateTime);
-    
+
     // set date picker to current date/time as default
     dateInputEl.setAttribute("value", dateTime);
 }
@@ -191,12 +206,12 @@ function setMinMaxDates() {
     var currentDateTime = new Date();
     var currentDateTimeString = getDateTimeString(currentDateTime);
     // add 4 days to current time for max date (5 days of data)
-    var maxDateTime = new Date(currentDateTime.getTime() + (4*unixSecPerDay*1000));
+    var maxDateTime = new Date(currentDateTime.getTime() + (4 * unixSecPerDay * 1000));
     var maxDateTimeString = getDateTimeString(maxDateTime);
-    
+
     // set datetime input min and max attributes
     dateInputEl.setAttribute("min", currentDateTimeString);
-    dateInputEl.setAttribute("max", maxDateTimeString);   
+    dateInputEl.setAttribute("max", maxDateTimeString);
 }
 
 // function to format date/time string for datetime input attributes
@@ -207,7 +222,7 @@ function getDateTimeString(date) {
     formattedString = formattedString[0].split("T")[0];
     // add time to string
     formattedString = formattedString + "T" + date.toTimeString().slice(0, 5);
-    
+
     return formattedString;
 }
 
@@ -224,7 +239,7 @@ function saveToLocal(type, obj) {
 function loadFromLocal(type) {
     // local storage contents
     var loadObj = JSON.parse(localStorage.getItem(type));
-    
+
     // check for loadObj contents
     if (loadObj) {
         return loadObj;
@@ -243,10 +258,10 @@ function loadFromLocal(type) {
 
 // event listeners
 //Function to toggle dark mode
-darkModeEl.addEventListener("click", function() {
+darkModeEl.addEventListener("click", function () {
     document.body.classList.toggle("dark-theme");
 });
-locationBtnEl.addEventListener("click", function() {
+locationBtnEl.addEventListener("click", function () {
     var location = "";
     // verify text inputs are not empty and contain no numbers
     if (cityInputEl.value && !cityInputEl.value.match(/\d/) && stateInputEl.value && !stateInputEl.value.match(/\d/)) {
@@ -259,7 +274,7 @@ locationBtnEl.addEventListener("click", function() {
         stateInputEl.value = "";
     };
 });
-dateBtnEl.addEventListener("click", function() {
+dateBtnEl.addEventListener("click", function () {
     // verify dateTime isn't empty
     if (dateInputEl.value) {
         saveToLocal("datetime", new Date(dateInputEl.value));
