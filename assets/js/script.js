@@ -23,19 +23,19 @@ var dateInputEl = document.querySelector("#date-time-input");
 // functions
 
 //get weather function
-function getWeather(date, visibility) {
-    var weatherEl = document.querySelector("#weather-date", "#weather-temp");
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&exclude=current,minutely,hourly,alerts&appid=" + weatherApiKey;
+// function getWeather(date, visibility) {
+//     var weatherEl = document.querySelector("#weather-date", "#weather-temp");
+//     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&exclude=current,minutely,hourly,alerts&appid=" + weatherApiKey;
 
-    fetch(apiURl)
-        .then(function (response) {
-            response.json()
-                .then(function (data) {
-                    weatherEl.textContent = getTimeString(data.daily.temp.visibility);
-                })
-        });
+//     fetch(apiURl)
+//         .then(function (response) {
+//             response.json()
+//                 .then(function (data) {
+//                     weatherEl.textContent = getTimeString(data.daily.temp.visibility);
+//                 })
+//         });
 
-}
+// }
 
 // function to get sun/moon cycle
 function getSunMoonCycle(location, date) {
