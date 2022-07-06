@@ -2,7 +2,7 @@
 // unix seconds per day
 const unixSecPerDay = 86400;
 // API keys/urls
-const weatherApiKey = 'd96eaa93b402b86cc39119d34076f8b0';
+const weatherApiKey = '57bb6de1daa898857366ae01e5539fb5';
 
 // where the iss at? does not require a key
 // base url is to get information about iss at a given time
@@ -21,56 +21,70 @@ var stateInputEl = document.querySelector("#state-input");
 var dateInputEl = document.querySelector("#date-time-input");
 
 // functions
+// Open Weather API call function
+function requestWeatherData() {
+    // get where and when
+    var location = loadFromLocal("location");
+    var inputDate = new Date(loadFromLocal("datetime"));
+    // create call string
+    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&exclude=current,minutely,hourly,alerts&appid=" + weatherApiKey;
+    
+    // current date
+    var currentDate = new Date();
+    // calculate number of days from current date
+    var numDays = Math.abs(Math.ceil((inputDate.getTime() - currentDate.getTime()) / unixSecPerDay / 1000));
+    console.log(inputDate);
 
-//get weather function
-// function getWeather(date, visibility) {
-//     var weatherEl = document.querySelector("#weather-date", "#weather-temp");
-//     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&exclude=current,minutely,hourly,alerts&appid=" + weatherApiKey;
+    // request weather data from open weather api
+    fetch(apiUrl)
+    .then(function (response) {
+        response.json()
+        .then(function (data) {
+            console.log(data);
+            // update sun cycle
+            setSunMoonCycles(data.daily[numDays]);
+            // determine moon phase name/icon needed
+            setMoonPhaseInfo(data.daily[numDays].moon_phase);
+            // update forecast
+            updateForecast(data.daily);
+        });
+    });
+}
 
-//     fetch(apiURl)
-//         .then(function (response) {
-//             response.json()
-//                 .then(function (data) {
-//                     weatherEl.textContent = getTimeString(data.daily.temp.visibility);
-//                 })
-//         });
-
-// }
+// get weather function
+function updateForecast(data) {
+    var weatherEl = document.querySelectorAll(".forecast-card");
+    
+    // update card contents using weather data
+    for(var i = 0; i < 5; i++) {
+        var date = new Date(data[i].dt*1000);
+        // console.log(weatherEl.item(i).querySelector(".temperature"));
+        // update date
+        weatherEl.item(i).querySelector(".weather-date").textContent = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+        // update temp
+        // update icon
+        // update visibility for current day only
+    };
+}
 
 // function to get sun/moon cycle
-function getSunMoonCycle(location, date) {
+function setSunMoonCycles(data) {
     // html elements to be updated
     var sunriseEl = document.querySelector("#sunrise-time");
     var sunsetEl = document.querySelector("#sunset-time");
     var moonriseEl = document.querySelector("#moonrise-time");
     var moonsetEl = document.querySelector("#moonset-time");
-    // create call string
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&exclude=current,minutely,hourly,alerts&appid=" + weatherApiKey;
-    // create date
-    var currentDate = new Date();
-    // date from input
-    var inputDate = new Date(date);
-    // calculate number of days from current date
-    var numDays = Math.abs(Math.ceil((inputDate.getTime() - currentDate.getTime()) / unixSecPerDay / 1000));
-    // request weather data from open weather api
-    fetch(apiUrl)
-        .then(function (response) {
-            response.json()
-                .then(function (data) {
-                    // update html elements value
-                    sunriseEl.textContent = getTimeString(data.daily[numDays].sunrise);
-                    sunsetEl.textContent = getTimeString(data.daily[numDays].sunset);
-                    moonriseEl.textContent = getTimeString(data.daily[numDays].moonrise);
-                    moonsetEl.textContent = getTimeString(data.daily[numDays + 1].moonset);
-
-                    // determine moon phase name/icon needed
-                    getMoonPhaseInfo(data.daily[numDays].moon_phase);
-                });
-        });
+    
+    // update html elements value
+    sunriseEl.textContent = getTimeString(data.sunrise);
+    sunsetEl.textContent = getTimeString(data.sunset);
+    moonriseEl.textContent = getTimeString(data.moonrise);
+    moonsetEl.textContent = getTimeString(data.moonset);
+    // TODO: handle moonset time being on next day
 }
 
 // function to determine moon phase name/icon needed
-function getMoonPhaseInfo(phaseNum) {
+function setMoonPhaseInfo(phaseNum) {
     // moon phase elemenets
     var moonphaseiconEl = document.querySelector("#phase-icon");
     var moonphasenameEl = document.querySelector("#phase-name");
@@ -254,7 +268,10 @@ function loadFromLocal(type) {
         };
         saveToLocal(type, loadObj);
         return loadObj;
-    };
+    } else if (type === "datetime") {
+        // default time of now
+        saveToLocal(type, new Date());
+    }
 };
 
 // event listeners
@@ -269,7 +286,7 @@ locationBtnEl.addEventListener("click", function () {
         location = cityInputEl.value.trim() + ", " + stateInputEl.value.trim().toUpperCase();
         // format location as latitude/longitude
         formatLocation(location);
-        getSunMoonCycle(location, loadFromLocal("datetime"));
+        requestWeatherData(location, loadFromLocal("datetime"));
         // clear input value
         cityInputEl.value = "";
         stateInputEl.value = "";
@@ -280,7 +297,7 @@ dateBtnEl.addEventListener("click", function () {
     if (dateInputEl.value) {
         saveToLocal("datetime", new Date(dateInputEl.value));
         // update sun/moon cycle times
-        getSunMoonCycle(loadFromLocal("location"), loadFromLocal("datetime"));
+        requestWeatherData(loadFromLocal("location"), loadFromLocal("datetime"));
         // clear input value
         dateInputEl.value = "";
     };
@@ -288,7 +305,7 @@ dateBtnEl.addEventListener("click", function () {
 
 // on load function calls
 // get sunrise, sunset, moonrise, and moonset times for current day and display
-getSunMoonCycle(loadFromLocal("location"), Date());
+requestWeatherData(loadFromLocal("location"), loadFromLocal("datetime"));
 // set datetime input default value as current date and time
 setDateInputDefault();
 // set datetime input min and max dates that can be selected
