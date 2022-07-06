@@ -1,15 +1,13 @@
 /* variables */
 
 header {
-    background: linear-gradient(
-        rgb(29, 2, 37) 20%,
-        rgb(46, 8, 68) 35%,
-        rgb(184, 107, 7) 120%
-      );
+      background-image: url('/assets/images/nebula-background.jpg');
+      background-size: cover;
       text-align: left;
-      padding: 5px;
+      padding: 20px 50px 20px 50px;
       margin-bottom: 5px;
       color: aliceblue;
+      position: sticky;
 }
 
 /*Toggle Dark/Light Mode styling */
@@ -39,7 +37,7 @@ body {
 }
 
 .card1 {
-    --text-color: rgb(245, 238, 238);
+    --text-color: rgb(5, 0, 0);
     --bkg-color: #0f0f0fe7;
 }
 
@@ -47,35 +45,145 @@ body {
 /* global styles */
 .card-panel {
     border-radius: 10px;
-    padding-bottom: 35px;
+    padding-bottom: 45px;
 }
 
-.main {
-    display: flex;
-    opacity: 80%;
+h2 {
+    border-bottom: solid purple 4px;
+    padding-bottom: 10px;
+}
+
+
+
+h3 {
+    border-bottom: solid purple 4px;
+    padding-bottom: 10px;
 }
 
 
 
 
 /* styles per section */
-#location-input {
+#city-input {
     width: 100%;
-    background-color: white;
+    background-color: black;
     margin: 8px 0;
     box-sizing: border-box;
-    border: 2px solid rgb(92, 10, 51);
-    color: black;
+    border: 2px solid purple;
+    color: white;
   }
+
+#state-input {
+    width: 100%;
+    background-color: black;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid purple;
+    color: white;
+}
 
 #dark-mode-toggle {
     display: flex;
     width: 75px;
     height: 75px;
     float: right;
-    transform: translate(-20%, -135%);
+    align-items: center;
+    margin-top: 25px;
 }
 
+#date-time {
+    padding-top: 25px;
+    color: black;
+}
+
+#date-time-input {
+    border: 2px solid purple;
+    background-color: black;
+}
+
+#sunrise {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+}
+
+#sunset {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+}
+
+#moonrise {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+}
+
+#moonset {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+}
+
+#moon-phase {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+}
+
+#mercury {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+}
+
+#venus {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+}
+
+#mars {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+}
+
+#jupiter {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+}
+
+#saturn {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+}
+
+#uranus {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+}
+
+#neptune {
+    display: flex;
+    flex-direction: column;
+    width: 150px;
+    height: 150px;
+}
 /* MEDIA QUERIES */
 /* small screens */
 /* @media screen and (min-width: 640px) {} */
