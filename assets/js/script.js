@@ -27,7 +27,7 @@ function requestWeatherData() {
     var location = loadFromLocal("location");
     var inputDate = new Date(loadFromLocal("datetime"));
     // create call string
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&exclude=current,minutely,hourly,alerts&appid=" + weatherApiKey;
+    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&units=imperial&exclude=current,minutely,hourly,alerts&appid=" + weatherApiKey;
     
     // current date
     var currentDate = new Date();
@@ -62,8 +62,10 @@ function updateForecast(data) {
         // update date
         weatherEl.item(i).querySelector(".weather-date").textContent = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
         // update temp
+        weatherEl.item(i).querySelector(".temperature").textContent = Math.round((data[i].temp.min + data[i].temp.max)/2) + "\u00b0";
         // update icon
         // update visibility for current day only
+        weatherEl.item(i).querySelector(".weather-date").textContent = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
     };
 }
 
