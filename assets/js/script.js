@@ -24,7 +24,7 @@ var dateInputEl = document.querySelector("#date-time-input");
 
 // functions
 // Open Weather API call function
-function requestWeatherData() {
+function requestWeatherData(isUpdate) {
     // get where and when
     var location = loadFromLocal("location");
     var inputDate = new Date(loadFromLocal("datetime"));
@@ -45,8 +45,11 @@ function requestWeatherData() {
             setSunMoonCycles(data.daily[numDays], data.daily[numDays+1].moonset);
             // determine moon phase name/icon needed
             setMoonPhaseInfo(data.daily[numDays].moon_phase);
-            // update forecast
-            updateForecast(data);
+            // check for initial call
+            if (!isUpdate) {
+                // update forecast
+                updateForecast(data);
+            }
         });
     });
 }
@@ -140,6 +143,9 @@ function setMoonPhaseInfo(phaseNum) {
 
     // create img tag
     var iconEl = document.createElement("img");
+
+    // clear previous images
+    moonphaseiconEl.innerHTML = "";
 
     // determine moon phase based on phase number
     if (phaseNum === 0 || phaseNum === 1) {
@@ -341,6 +347,44 @@ function calcPlanetVisible(planetData) {
     }
 }
 
+// function to update where and when location text
+function updateLocationText(city, state) {
+    // update city placeholder
+    cityInputEl.setAttribute("placeholder", city);
+    // update state placeholder
+    stateInputEl.setAttribute("placeholder", state);
+}
+
+// function to update where and when date text
+function updateDateText() {
+    // get date from local
+    var date = new Date(loadFromLocal("datetime"));
+    // datetime element to update
+    var datetimeEl = document.querySelector("#view-date-time");
+    // date string array
+    var dateStrings = [
+        date.getMonth() + 1,
+        date.getDate(),
+        date.getFullYear()
+    ];
+    var timeStrings = [];
+    // time string array
+    if (date.getHours() > 11) {
+        timeStrings.push(date.getHours() - 12);
+        timeStrings.push(date.getMinutes());
+        timeStrings.push("PM");
+    } else {
+        timeStrings.push(date.getHours());
+        timeStrings.push(date.getMinutes());
+        timeStrings.push("AM");
+    };
+
+    // construct date time string
+    var dateTimeString = dateStrings.join("/") + " " + timeStrings[0] + ":" + timeStrings[1] + " " + timeStrings[2];
+    
+    datetimeEl.textContent = dateTimeString;
+}
+
 // function to save to local storage
 function saveToLocal(type, obj) {
     if (type === "location") {
@@ -389,7 +433,9 @@ locationBtnEl.addEventListener("click", function () {
         // calculate and display if planets are above horizon
         requestPlanetData(loadFromLocal("location"));
         // update weather, sun/moon cycles
-        requestWeatherData(location, loadFromLocal("datetime"));
+        requestWeatherData(true);
+        // update where and when location text
+        updateLocationText(cityInputEl.value, stateInputEl.value);
         // clear input value
         cityInputEl.value = "";
         stateInputEl.value = "";
@@ -402,7 +448,9 @@ dateBtnEl.addEventListener("click", function () {
         // calculate and display if planets are above horizon
         requestPlanetData(loadFromLocal("location"));
         // update weather, sun/moon cycles
-        requestWeatherData(loadFromLocal("location"), loadFromLocal("datetime"));
+        requestWeatherData(true);
+        // update view time in where and when
+        updateDateText();
         // clear input value
         dateInputEl.value = "";
     };
@@ -412,8 +460,10 @@ dateBtnEl.addEventListener("click", function () {
 // calculate and display if planets are above horizon
 requestPlanetData(loadFromLocal("location"));
 // update weather, sun/moon cycles
-requestWeatherData(loadFromLocal("location"), loadFromLocal("datetime"));
+requestWeatherData(false);
 // set datetime input default value as current date and time
 setDateInputDefault();
 // set datetime input min and max dates that can be selected
 setMinMaxDates();
+// update view time in where and when
+updateDateText();
