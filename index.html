@@ -14,7 +14,7 @@
 
 <body>
     <!-- header start -->
-    <header class="row">
+    <header>
         <h1>Astrowatch.io</h1>
         <!-- dark mode toggle start -->
         <img src="./assets/images/standard-icons/svg/dark-mode.svg" alt="Dark mode toggle" id="dark-mode-toggle" />
@@ -145,18 +145,18 @@
                 <h2 class="center-align white-text">Viewing Details</h2>
                 <div class="row">
                     <!-- left details column start -->
-                    <section class="col l4 m6 s12">
+                    <section class="col xl4 m6 s12">
                         <!-- Sun Cycle section start -->
                         <section id="sun-cycle" class="card-panel grey darken">
                             <h3 class="center-align white-text" id="suncycle">Sun Cycle</h3>
                             <!-- sunrise container start -->
-                            <div id="sunrise" class="row">
+                            <div id="sunrise" class="row valign-wrapper">
                                 <img src="./assets/images/standard-icons/svg/sunrise.svg" class="col s6" />
                                 <p id="sunrise-time" class="right-align white-text cycle-text col s6">Sunrise Time</p>
                             </div>
                             <!-- sunrise container end -->
                             <!-- sunset container start -->
-                            <div id="sunset" class="row">
+                            <div id="sunset" class="row valign-wrapper">
                                 <img src="./assets/images/standard-icons/svg/sunset.svg" class="col s6" />
                                 <p id="sunset-time" class="right-align white-text cycle-text col s6">Sunset Time</p>
                             </div>
@@ -167,20 +167,20 @@
                         <section id="moon-cycle" class="card-panel grey darken">
                             <h3 class="center-align white-text" id="mooncycle">Moon Cycle</h3>
                             <!-- Moonrise container start -->
-                            <div id="moonrise" class="row">
+                            <div id="moonrise" class="row valign-wrapper">
                                 <img src="./assets/images/standard-icons/svg/moonrise.svg" class="col s6" />
                                 <p id="moonrise-time" class="right-align white-text cycle-text col s6">Moonrise Time</p>
                             </div>
                             <!-- Moonrise container end -->
                             <!-- Moonset container start -->
-                            <div id="moonset" class="row">
+                            <div id="moonset" class="row valign-wrapper">
                                 <img src="./assets/images/standard-icons/svg/moonset.svg" class="col s6" />
                                 <p id="moonset-time" class="right-align white-text cycle-text col s6">Moonset Time</p>
                             </div>
                             <!-- Moonset container end -->
                             <!-- Moon Phase container start -->
-                            <div id="moon-phase" class="row">
-                                <span id="phase-icon">
+                            <div id="moon-phase" class="row valign-wrapper">
+                                <span id="phase-icon" class="col s6">
                                     <!-- dynamically update moon phase icon -->
                                 </span>
                                 <p id="phase-name" class="right-align white-text cycle-text col s6">Moon Phase</p>
@@ -191,7 +191,7 @@
                     </section>
                     <!-- left details column end -->
                     <!-- right details column start -->
-                    <section id="planets" class="col l8 m6 s12">
+                    <section id="planets" class="col xl8 m6 s12">
                         <div class="card-panel grey dark">
                             <h3 class="center-align white-text">Is it in Your Sky?</h3>
                             <div class="row">

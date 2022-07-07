@@ -23,6 +23,8 @@ header {
 
 h1 {
     margin: 0;
+    font-size: 3em;
+    font-weight: bolder;
     line-height: 85%;
 }
 
@@ -61,12 +63,14 @@ body {
 }
 
 h2 {
+    font-size: 2.5em;
     border-bottom: solid purple 4px;
     padding-bottom: 10px;
 }
 
 
 h3 {
+    font-size: 1.75em;
     padding-bottom: 10px;
 }
 
@@ -91,11 +95,7 @@ h3 {
 }
 
 #dark-mode-toggle {
-    display: flex;
-    width: 75px;
-    height: 75px;
-    align-items: center;
-    margin-top: 25px;
+    width: 50px;
 }
 
 #date-time {
@@ -113,17 +113,21 @@ h3 {
 }
 
 .cycle-text {
-    font-size: 1.5em;
+    font-size: 1.25em;
     font-weight: bold;
 }
 
 h4 {
-    font-size: 1.5em;
+    font-size: 1.25em;
     font-weight: bold;
 }
 
 .row {
     margin-bottom: 10px;
+}
+
+.phase-icon {
+    width: 100%;
 }
 
 /* MEDIA QUERIES */

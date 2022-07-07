@@ -144,8 +144,7 @@ function setMoonPhaseInfo(phaseNum) {
 
     // create img tag
     var iconEl = document.createElement("img");
-    iconEl.setAttribute("class", "col s6");
-
+    iconEl.setAttribute("class", "phase-icon");
     // clear previous images
     moonphaseiconEl.innerHTML = "";
 
