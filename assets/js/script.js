@@ -4,19 +4,11 @@ const unixSecPerDay = 86400;
 // API keys/urls
 const weatherApiKey = "57bb6de1daa898857366ae01e5539fb5";
 // AstronomyAPI auth info GITHUB
-// TODO: update appId/secret
-const astroAppId = "fd807492-c05f-4f40-95d1-687b31224078";
-const astroSecret = "537ee7cdfcfd302a1b2ee5f1a21d78cd7503095d5feb8b3d419cc98f5";
+const astroAppId = "312a5dc5-d6c5-47d7-820d-3855916e3241";
+const astroSecret = "537ee7cdfcfd302a1b2ee5f1a21d78cd7503095d5feb8b3d419cc98f575a6ae9e666a8f4729692effeec9d9017bbd19a22d7478f57bf627cedf92d958b5fe198bb4887463ceea29bb7e446f11b78fc4d5b193ff4888f517593402f0d690bc962d9f783d6cab375755ed5808d01f45379";
 const authKey = btoa(astroAppId + ":" + astroSecret);
 // AstronomyAPI all bodies endpoint
 const astroUrl = "https://api.astronomyapi.com/api/v2/bodies/positions?";
-// AstronomyAPI auth info LOCAL
-const astroAppIdTemp = "5f06e32e-2209-4b61-82b6-a43bddbc1e3c";
-const astroSecretTemp = "537ee7cdfcfd302a1b2ee5f1a21d78cd7503095d5feb8b3d419cc98f575a6ae9e666a8f4729692effeec9d9017bbd19a22d7478f57bf627cedf92d958b5fe198dad90f8cc0fdad6ac98e798449babf782104dd07cc68aee8a14ebd52e8e6d343e32beb9d45738695792cf60cb0a44e84";
-const authKeyTemp = btoa(astroAppIdTemp + ":" + astroSecretTemp);
-// where the iss at? does not require a key
-// base url is to get information about iss at a given time
-const issApiBaseUrl = "https://api.wheretheiss.at/v1/satellites/25544/positions?timestamps=";
 // element references
 // dark mode toggle element
 var darkModeEl = document.querySelector("#dark-mode-toggle");
@@ -156,16 +148,6 @@ function getDateTimeString(date) {
     return formattedString;
 }
 
-// function to update planet card details
-function updatePlanetCards(location) {
-    // planets section selector
-    var planetsSectionEl = document.querySelector("#planets");
-    var planetChildren = planetsSectionEl.children;
-
-    for (var i = 1; i < planetChildren.length; i++) {
-        // getPlanetInfo(planetChildren[i]);
-    }
-};
 
 // function to calculate if a planet is visible
 function requestPlanetData() {
@@ -180,31 +162,41 @@ function requestPlanetData() {
         "to_date=" + toDate.toJSON().slice(0, 10),
         "time=" + fromDate.toJSON().slice(11, 19)
     ];
-
+    
     const urlQuery = params.join('&');
     
     fetch(astroUrl + urlQuery, {
         method: "GET",
         headers: {
-            "Authorization": "Basic " + authKeyTemp
+            "Authorization": "Basic " + authKey
         }
     })
     .then(function (response) {
         response.json()
-            .then(function (data) {
-                for (var i = 0; i < data.data.table.rows.length; i++) {
-                    var planetName = data.data.table.rows[i].entry.id;
-                    if (planetName === "mercury" || planetName === "venus" || planetName === "mars" || planetName === "jupiter" || planetName === "saturn" || planetName === "uranus" || planetName === "neptune") {
-                        calcPlanetVisible(data.data.table.rows[i]);
-                    }
-                };
-            })
+        .then(function (data) {
+            for (var i = 0; i < data.data.table.rows.length; i++) {
+                var planetName = data.data.table.rows[i].entry.id;
+                if (planetName === "mercury" || planetName === "venus" || planetName === "mars" || planetName === "jupiter" || planetName === "saturn" || planetName === "uranus" || planetName === "neptune") {
+                    calcPlanetVisible(data.data.table.rows[i]);
+                }
+            };
+        })
     });
 }
 
 // function to calculate if planet is visible
 function calcPlanetVisible(planetData) {
-    console.log(planetData);
+    // planet element to update
+    var planetEl = document.querySelector("#" + planetData.cells[0].id);
+    // planet horizonal altitude
+    var altitude = planetData.cells[0].position.horizonal.altitude.degrees;
+    
+    // update planet element text to say yes or no
+    if (altitude > 0 && altitude < 90) {
+        planetEl.querySelector(".is-it-visibile").textContent = "Yes";
+    } else {
+        planetEl.querySelector(".is-it-visibile").textContent = "No";
+    }
 }
 
 // function to save to local storage
@@ -273,7 +265,7 @@ dateBtnEl.addEventListener("click", function() {
 // get sunrise, sunset, moonrise, and moonset times for current day and display
 getSunMoonCycle(loadFromLocal("location"), Date());
 // calculate and display if planets are above horizon
-updatePlanetCards(loadFromLocal("location"));
+requestPlanetData(loadFromLocal("location"));
 // set datetime input default value as current date and time
 setDateInputDefault();
 // set datetime input min and max dates that can be selected
