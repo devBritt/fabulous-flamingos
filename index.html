@@ -57,72 +57,74 @@
             </form>
             <!-- Where and When box end -->
             <!-- forecast box start -->
-            <section>
+            <section class="row">
                 <div class="card-panel grey darken-2">
                     <h2 class="center-align white-text">6-Day Forecast</h2>
                     <!-- forecast container start -->
                     <div id="forecast-container" class="row">
+                        <!-- forecast first col start -->
                         <!-- today's forecast card start -->
-                        <article id="forecast-today" class="forecast-card card-panel grey darken col l4 m6 s12">
-                            <p class="weather-date white-text">Date</p>
-                            <!-- weather icon goes in span -->
-                            <span class="weather-icon"></span>
-                            <p class="temperature white-text">Temp</p>
-                            <!-- visibility icon goes in span -->
-                            <span class="visibility-icon"></span>
-                            <p class="visibility white-text">Cloud Coverage</p>
-                            <p class="sky-visibility white-text"></p>
-                        </article>
-                        <!-- forecast card start -->
-                        <article id="day-2" class="forecast-card card-panel grey darken col l4 m6 s12">
-                            <p class="weather-date white-text">Date</p>
-                            <!-- weather icon goes in span -->
-                            <span class="weather-icon"></span>
-                            <p class="temperature white-text">Temp</p>
-                            <p class="visibility white-text">Cloud Coverage</p>
-                            <p class="sky-visibility white-text"></p>
-                        </article>
-                        <!-- forecast card end -->
-                        <!-- forecast card start -->
-                        <article id="day-4" class="forecast-card card-panel grey darken col l4 m6 s12">
-                            <p class="weather-date white-text" id="weather-date">Date</p>
-                            <!-- weather icon goes in span -->
-                            <span class="weather-icon"></span>
-                            <p class="temperature white-text" id="weather-temp">Temp</p>
-                            <p class="visibility white-text">Cloud Coverage</p>
-                            <p class="sky-visibility white-text"></p>
-                        </article>
-                        <!-- forecast card end -->
-                        <!-- forecast card start -->
-                        <article id="day-3" class="forecast-card card-panel grey darken col l4 m6 s12">
-                            <p class="weather-date white-text">Date</p>
-                            <!-- weather icon goes in span -->
-                            <span class="weather-icon"></span>
-                            <p class="temperature white-text">Temp</p>
-                            <p class="visibility white-text">Cloud Coverage</p>
-                            <p class="sky-visibility white-text"></p>
-                        </article>
-                        <!-- forecast card end -->
-                        <!-- forecast card start -->
-                        <article id="day-5" class="forecast-card card-panel grey darken col l4 m6 s12">
-                            <p class="weather-date white-text" id="weather-date">Date</p>
-                            <!-- weather icon goes in span -->
-                            <span class="weather-icon"></span>
-                            <p class="temperature white-text" id="weather-temp">Temp</p>
-                            <p class="visibility white-text">Cloud Coverage</p>
-                            <p class="sky-visibility white-text"></p>
-                        </article>
-                        <!-- forecast card end -->
-                        <!-- forecast card start -->
-                        <article id="day-5" class="forecast-card card-panel grey darken col l4 m6 s12">
-                            <p class="weather-date white-text" id="weather-date">Date</p>
-                            <!-- weather icon goes in span -->
-                            <span class="weather-icon"></span>
-                            <p class="temperature white-text" id="weather-temp">Temp</p>
-                            <p class="visibility white-text">Cloud Coverage</p>
-                            <p class="sky-visibility white-text"></p>
-                        </article>
-                        <!-- forecast card end -->
+                        <div class="col s4 card-panel grey darken">
+                            <article id="day-1" class="forecast-card">
+                                <p class="weather-date white-text">Date</p>
+                                <!-- weather icon goes in span -->
+                                <span class="weather-icon"></span>
+                                <p class="temperature white-text">Temp</p>
+                                <!-- visibility icon goes in span -->
+                                <span class="visibility-icon"></span>
+                                <p class="sky-visibility white-text">Visibility</p>
+                            </article>
+                        </div>
+                        <!-- today's forecast card end -->
+                        <!-- forecast first col end -->
+                        <!-- forecast second col start -->
+                        <div class="col m4">
+                            <!-- forecast card start -->
+                            <div class="card-panel grey darken">
+                                <article id="day-2" class="forecast-card">
+                                    <p class="weather-date white-text">Date</p>
+                                    <!-- weather icon goes in span -->
+                                    <span class="weather-icon"></span>
+                                    <p class="temperature white-text">Temp</p>
+                                </article>
+                            </div>
+                            <!-- forecast card end -->
+                            <!-- forecast card start -->
+                            <div class="card-panel grey darken">
+                                <article id="day-4" class="forecast-card">
+                                    <p class="weather-date white-text">Date</p>
+                                    <!-- weather icon goes in span -->
+                                    <span class="weather-icon"></span>
+                                    <p class="temperature white-text">Temp</p>
+                                </article>
+                            </div>
+                            <!-- forecast card end -->
+                        </div>
+                        <!-- forecast second col end -->
+                        <!-- forecast third col start -->
+                        <div class="col s4">
+                            <!-- forecast card start -->
+                            <div class="card-panel grey darken">
+                                <article id="day-3" class="forecast-card">
+                                    <p class="weather-date white-text">Date</p>
+                                    <!-- weather icon goes in span -->
+                                    <span class="weather-icon"></span>
+                                    <p class="temperature white-text">Temp</p>
+                                </article>
+                            </div>
+                            <!-- forecast card end -->
+                            <!-- forecast card start -->
+                            <div class="card-panel grey darken">
+                                <article id="day-5" class="forecast-card">
+                                    <p class="weather-date white-text">Date</p>
+                                    <!-- weather icon goes in span -->
+                                    <span class="weather-icon"></span>
+                                    <p class="temperature white-text">Temp</p>
+                                </article>
+                            </div>
+                            <!-- forecast card end -->
+                        </div>
+                        <!-- forecast third col end -->
                     </div>
                 </div>
                 <!-- forecast container end -->
