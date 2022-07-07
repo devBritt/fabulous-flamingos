@@ -130,15 +130,23 @@ h4 {
     width: 100%;
 }
 
-/* MEDIA QUERIES */
-/* small screens */
-/* @media screen and (min-width: 640px) {} */
+/*#forecast-container p{
+    font-weight: bold;
+}*/
 
-/* medium screens */
-/* @media screen and (min-width: 768px) {} */
+.temperature {
+    font-size: large;
+    font-weight: bold;
+}
 
-/* large screens */
-/* @media screen and (min-width: 992px) {} */
+.weather-date {
+    font-weight: bold ;
+}
 
-/* xl screens */
-/* @media screen and (min-width: 1200px) {} */
+.visibility {
+    font-style: italic;
+}
+
+.sky-visibility {
+    font-weight: bold;
+}
