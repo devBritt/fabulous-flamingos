@@ -2,7 +2,7 @@
 // unix seconds per day
 const unixSecPerDay = 86400;
 // API keys/urls
-const weatherApiKey = "57bb6de1daa898857366ae01e5539fb5";
+const weatherApiKey = "d96eaa93b402b86cc39119d34076f8b0";
 // AstronomyAPI auth info GITHUB
 const astroAppId = "312a5dc5-d6c5-47d7-820d-3855916e3241";
 const astroSecret = "537ee7cdfcfd302a1b2ee5f1a21d78cd7503095d5feb8b3d419cc98f575a6ae9e666a8f4729692effeec9d9017bbd19a22d7478f57bf627cedf92d958b5fe198bb4887463ceea29bb7e446f11b78fc4d5b193ff4888f517593402f0d690bc962d9f783d6cab375755ed5808d01f45379";
@@ -24,7 +24,7 @@ var dateInputEl = document.querySelector("#date-time-input");
 
 // functions
 // Open Weather API call function
-function requestWeatherData(isUpdate) {
+function requestWeatherData() {
     // get where and when
     var location = loadFromLocal("location");
     var inputDate = new Date(loadFromLocal("datetime"));
@@ -45,11 +45,8 @@ function requestWeatherData(isUpdate) {
             setSunMoonCycles(data.daily[numDays], data.daily[numDays+1].moonset);
             // determine moon phase name/icon needed
             setMoonPhaseInfo(data.daily[numDays].moon_phase);
-            // check for initial call
-            if (!isUpdate) {
-                // update forecast
-                updateForecast(data);
-            }
+            // update forecast
+            updateForecast(data);
         });
     });
 }
@@ -60,6 +57,8 @@ function updateForecast(data) {
     // update card contents using weather data
     for(var i = 0; i < 6; i++) {
         var date = new Date(data.daily[i].dt*1000);
+        // clear previous icons
+        weatherEl.item(i).querySelector(".weather-icon").innerHTML = "";
         // create img tag for weather icon
         var iconEl = document.createElement("img");
         // update date
@@ -230,11 +229,11 @@ function formatLocation(input) {
     };
 
     // format location string
-    if (input && input.includes(",")) {
+    if (input.includes(",")) {
         // if input is city, state code format
         location = input.split(",");
         // create call string
-        apiUrl = apiUrl + "direct?q=" + location[0] + "," + location[1].trim() + ",US&limit=1&appid=" + weatherApiKey;
+        apiUrl = apiUrl + "direct?q=" + location[0].trim().toLowerCase() + "," + location[1].trim().toLowerCase() + ",US&limit=1&appid=" + weatherApiKey;
     } else if (Number.isInteger(Number(input))) {
         // create call string
         apiUrl = apiUrl + "zip?zip=" + input.trim() + ",US&appid=" + weatherApiKey;
@@ -242,11 +241,11 @@ function formatLocation(input) {
         // return to calling function in any other case
         return;
     }
-
+    
     // request location formatting
     fetch(apiUrl)
-        .then(function (response) {
-            response.json()
+    .then(function (response) {
+        response.json()
                 .then(function (data) {
                     // check for array
                     if (Array.isArray(data)) {
@@ -391,7 +390,6 @@ function saveToLocal(type, obj) {
     if (type === "location") {
         localStorage.setItem(type, JSON.stringify(obj));
     } else if (type === "datetime") {
-        console.log(obj);
         localStorage.setItem(type, JSON.stringify(obj.getTime()));
     };
 }
@@ -402,7 +400,7 @@ function loadFromLocal(type) {
     var loadObj = JSON.parse(localStorage.getItem(type));
 
     // check for loadObj contents
-    if (loadObj) {
+    if (loadObj !== undefined || loadObj !== null) {
         return loadObj;
     }
     // if loadObj is empty, check for type request and provide default data
@@ -433,9 +431,9 @@ locationBtnEl.addEventListener("click", function () {
         // format location as latitude/longitude
         formatLocation(location);
         // calculate and display if planets are above horizon
-        requestPlanetData(loadFromLocal("location"));
+        requestPlanetData();
         // update weather, sun/moon cycles
-        requestWeatherData(true);
+        requestWeatherData();
         // update where and when location text
         updateLocationText(cityInputEl.value, stateInputEl.value);
         // clear input value
@@ -448,9 +446,9 @@ dateBtnEl.addEventListener("click", function () {
     if (dateInputEl.value) {
         saveToLocal("datetime", new Date(dateInputEl.value));
         // calculate and display if planets are above horizon
-        requestPlanetData(loadFromLocal("location"));
+        requestPlanetData();
         // update weather, sun/moon cycles
-        requestWeatherData(true);
+        requestWeatherData();
         // update view time in where and when
         updateDateText();
         // clear input value
@@ -460,9 +458,9 @@ dateBtnEl.addEventListener("click", function () {
 
 // on load function calls
 // calculate and display if planets are above horizon
-requestPlanetData(loadFromLocal("location"));
+requestPlanetData();
 // update weather, sun/moon cycles
-requestWeatherData(false);
+requestWeatherData();
 // set datetime input default value as current date and time
 setDateInputDefault();
 // set datetime input min and max dates that can be selected
