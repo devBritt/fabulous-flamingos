@@ -64,9 +64,58 @@ function updateForecast(data) {
         // update temp
         weatherEl.item(i).querySelector(".temperature").textContent = Math.round((data[i].temp.min + data[i].temp.max)/2) + "\u00b0";
         // update icon
+        
         // update visibility for current day only
         weatherEl.item(i).querySelector(".weather-date").textContent = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
     };
+}
+
+// get weather icon
+function getWeatherIcon(weather, date) {
+    var date = new Date(date);
+
+    // thunderstorm
+    if (weather > 199 || weather < 233) {
+        return "assets/images/standard-icons/svg/thunderstorm.svg";
+    }
+    // rain
+    else if (weather > 299 || weather < 532) {
+        return "assets/images/standard-icons/svg/rain.svg";
+    }
+    // snow
+    else if (weather > 599 || weather < 623) {
+        // sleet
+        if (weather === 611 || weather === 612 || weather === 613) {
+          return "assets/images/standard-icons/svg/sleet.svg";
+        }
+        return "assets/images/standard-icons/svg/snow.svg";
+    }
+    // mist, smoke, haze
+    else if (weather === 701 || weather === 711 || weather === 721) {
+        return "assets/images/standard-icons/svg/fog.svg";
+    }
+    // clouds
+    else if (weather > 799 || weather < 805) {
+        // check for am/pm
+        if (date.getHours() <= 10) {
+            return "assets/images/standard-icons/svg/cloudy.svg";
+        } else if (date.getHours() > 10) {
+            return "assets/images/standard-icons/svg/cloudy-night.svg";
+        };
+    }
+    // else if weather=800 (clear)
+    else if (weather === 800) {
+        // check for am/pm
+        if (date.getHours() <= 10) {
+            return "assets/images/standard-icons/svg/sun.svg";
+        } else if (date.getHours() > 10) {
+            return "assets/images/standard-icons/svg/moon.svg";
+        };
+    }
+    // else (alien)
+    else {
+        return "assets/images/standard-icons/svg/alien.svg";
+    }
 }
 
 // function to get sun/moon cycle
