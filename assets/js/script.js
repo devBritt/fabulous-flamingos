@@ -27,7 +27,7 @@ function requestWeatherData() {
     var location = loadFromLocal("location");
     var inputDate = new Date(loadFromLocal("datetime"));
     // create call string
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&units=imperial&exclude=current,minutely,hourly,alerts&appid=" + weatherApiKey;
+    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&units=imperial&exclude=minutely,hourly,alerts&appid=" + weatherApiKey;
     
     // current date
     var currentDate = new Date();
@@ -42,11 +42,11 @@ function requestWeatherData() {
         .then(function (data) {
             console.log(data);
             // update sun cycle
-            setSunMoonCycles(data.daily[numDays]);
+            setSunMoonCycles(data.daily[numDays], data.daily[numDays+1].moonset);
             // determine moon phase name/icon needed
             setMoonPhaseInfo(data.daily[numDays].moon_phase);
             // update forecast
-            updateForecast(data.daily);
+            updateForecast(data);
         });
     });
 }
@@ -57,33 +57,34 @@ function updateForecast(data) {
     
     // update card contents using weather data
     for(var i = 0; i < 5; i++) {
-        var date = new Date(data[i].dt*1000);
+        var date = new Date(data.daily[i].dt*1000);
+        // create img tag for weather icon
+        var iconEl = document.createElement("img");
         // console.log(weatherEl.item(i).querySelector(".temperature"));
         // update date
         weatherEl.item(i).querySelector(".weather-date").textContent = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
         // update temp
-        weatherEl.item(i).querySelector(".temperature").textContent = Math.round((data[i].temp.min + data[i].temp.max)/2) + "\u00b0";
+        weatherEl.item(i).querySelector(".temperature").textContent = Math.round((data.daily[i].temp.min + data.daily[i].temp.max)/2) + "\u00b0";
         // update icon
-        
+        iconEl.src = getWeatherIcon(data.daily[i].weather[0].id, date);
+        weatherEl.item(i).querySelector(".weather-icon").appendChild(iconEl);
         // update visibility for current day only
-        weatherEl.item(i).querySelector(".weather-date").textContent = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+        weatherEl.item(i).querySelector(".sky-visibility").textContent = data.daily[i].clouds + "\u0025";
     };
 }
 
 // get weather icon
 function getWeatherIcon(weather, date) {
-    var date = new Date(date);
-
     // thunderstorm
-    if (weather > 199 || weather < 233) {
+    if (weather > 199 && weather < 233) {
         return "assets/images/standard-icons/svg/thunderstorm.svg";
     }
     // rain
-    else if (weather > 299 || weather < 532) {
+    else if (weather > 299 && weather < 532) {
         return "assets/images/standard-icons/svg/rain.svg";
     }
     // snow
-    else if (weather > 599 || weather < 623) {
+    else if (weather > 599 && weather < 623) {
         // sleet
         if (weather === 611 || weather === 612 || weather === 613) {
           return "assets/images/standard-icons/svg/sleet.svg";
@@ -95,7 +96,7 @@ function getWeatherIcon(weather, date) {
         return "assets/images/standard-icons/svg/fog.svg";
     }
     // clouds
-    else if (weather > 799 || weather < 805) {
+    else if (weather > 799 && weather < 805) {
         // check for am/pm
         if (date.getHours() <= 10) {
             return "assets/images/standard-icons/svg/cloudy.svg";
@@ -119,7 +120,7 @@ function getWeatherIcon(weather, date) {
 }
 
 // function to get sun/moon cycle
-function setSunMoonCycles(data) {
+function setSunMoonCycles(data, moonset) {
     // html elements to be updated
     var sunriseEl = document.querySelector("#sunrise-time");
     var sunsetEl = document.querySelector("#sunset-time");
@@ -130,7 +131,7 @@ function setSunMoonCycles(data) {
     sunriseEl.textContent = getTimeString(data.sunrise);
     sunsetEl.textContent = getTimeString(data.sunset);
     moonriseEl.textContent = getTimeString(data.moonrise);
-    moonsetEl.textContent = getTimeString(data.moonset);
+    moonsetEl.textContent = getTimeString(moonset);
     // TODO: handle moonset time being on next day
 }
 
