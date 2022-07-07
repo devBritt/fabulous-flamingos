@@ -390,6 +390,9 @@ locationBtnEl.addEventListener("click", function () {
         location = cityInputEl.value.trim() + ", " + stateInputEl.value.trim().toUpperCase();
         // format location as latitude/longitude
         formatLocation(location);
+        // calculate and display if planets are above horizon
+        requestPlanetData(loadFromLocal("location"));
+        // update weather, sun/moon cycles
         requestWeatherData(location, loadFromLocal("datetime"));
         // clear input value
         cityInputEl.value = "";
@@ -400,7 +403,9 @@ dateBtnEl.addEventListener("click", function () {
     // verify dateTime isn't empty
     if (dateInputEl.value) {
         saveToLocal("datetime", new Date(dateInputEl.value));
-        // update sun/moon cycle times
+        // calculate and display if planets are above horizon
+        requestPlanetData(loadFromLocal("location"));
+        // update weather, sun/moon cycles
         requestWeatherData(loadFromLocal("location"), loadFromLocal("datetime"));
         // clear input value
         dateInputEl.value = "";
@@ -410,7 +415,7 @@ dateBtnEl.addEventListener("click", function () {
 // on load function calls
 // calculate and display if planets are above horizon
 requestPlanetData(loadFromLocal("location"));
-// get forecast and display in 6-day forecast section
+// update weather, sun/moon cycles
 requestWeatherData(loadFromLocal("location"), loadFromLocal("datetime"));
 // set datetime input default value as current date and time
 setDateInputDefault();
