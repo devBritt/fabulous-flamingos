@@ -3,6 +3,17 @@
 const unixSecPerDay = 86400;
 // API keys/urls
 const weatherApiKey = "57bb6de1daa898857366ae01e5539fb5";
+// AstronomyAPI auth info GITHUB
+// TODO: update appId/secret
+const astroAppId = "fd807492-c05f-4f40-95d1-687b31224078";
+const astroSecret = "537ee7cdfcfd302a1b2ee5f1a21d78cd7503095d5feb8b3d419cc98f5";
+const authKey = btoa(astroAppId + ":" + astroSecret);
+// AstronomyAPI all bodies endpoint
+const astroUrl = "https://api.astronomyapi.com/api/v2/bodies/positions?";
+// AstronomyAPI auth info LOCAL
+const astroAppIdTemp = "5f06e32e-2209-4b61-82b6-a43bddbc1e3c";
+const astroSecretTemp = "537ee7cdfcfd302a1b2ee5f1a21d78cd7503095d5feb8b3d419cc98f575a6ae9e666a8f4729692effeec9d9017bbd19a22d7478f57bf627cedf92d958b5fe198dad90f8cc0fdad6ac98e798449babf782104dd07cc68aee8a14ebd52e8e6d343e32beb9d45738695792cf60cb0a44e84";
+const authKeyTemp = btoa(astroAppIdTemp + ":" + astroSecretTemp);
 // where the iss at? does not require a key
 // base url is to get information about iss at a given time
 const issApiBaseUrl = "https://api.wheretheiss.at/v1/satellites/25544/positions?timestamps=";
@@ -152,13 +163,48 @@ function updatePlanetCards(location) {
     var planetChildren = planetsSectionEl.children;
 
     for (var i = 1; i < planetChildren.length; i++) {
-        getPlanetInfo(planetChildren[i]);
+        // getPlanetInfo(planetChildren[i]);
     }
 };
 
 // function to calculate if a planet is visible
-function getPlanetInfo(planetInfo) {
+function requestPlanetData() {
+    // get saved date
+    var fromDate = new Date(loadFromLocal("datetime")) || new Date();
+    var toDate = new Date(fromDate.valueOf()+(unixSecPerDay*1000));
+    const params = [
+        "latitude=" + loadFromLocal("location").latitude,
+        "longitude=" + loadFromLocal("location").longitude,
+        "elevation=0",
+        "from_date=" + fromDate.toJSON().slice(0, 10),
+        "to_date=" + toDate.toJSON().slice(0, 10),
+        "time=" + fromDate.toJSON().slice(11, 19)
+    ];
+
+    const urlQuery = params.join('&');
     
+    fetch(astroUrl + urlQuery, {
+        method: "GET",
+        headers: {
+            "Authorization": "Basic " + authKeyTemp
+        }
+    })
+    .then(function (response) {
+        response.json()
+            .then(function (data) {
+                for (var i = 0; i < data.data.table.rows.length; i++) {
+                    var planetName = data.data.table.rows[i].entry.id;
+                    if (planetName === "mercury" || planetName === "venus" || planetName === "mars" || planetName === "jupiter" || planetName === "saturn" || planetName === "uranus" || planetName === "neptune") {
+                        calcPlanetVisible(data.data.table.rows[i]);
+                    }
+                };
+            })
+    });
+}
+
+// function to calculate if planet is visible
+function calcPlanetVisible(planetData) {
+    console.log(planetData);
 }
 
 // function to save to local storage
@@ -188,7 +234,10 @@ function loadFromLocal(type) {
         };
         saveToLocal(type, loadObj);
         return loadObj;
-    };
+    } else if (type === "datetime") {
+        // default to today's date
+        saveToLocal(type, Date.now());
+    }
 };
 
 // event listeners
