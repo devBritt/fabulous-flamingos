@@ -56,7 +56,7 @@ function updateForecast(data) {
     var weatherEl = document.querySelectorAll(".forecast-card");
     
     // update card contents using weather data
-    for(var i = 0; i < 5; i++) {
+    for(var i = 0; i < 6; i++) {
         var date = new Date(data.daily[i].dt*1000);
         // create img tag for weather icon
         var iconEl = document.createElement("img");
@@ -273,7 +273,7 @@ function setMinMaxDates() {
     var currentDateTime = new Date();
     var currentDateTimeString = getDateTimeString(currentDateTime);
     // add 4 days to current time for max date (5 days of data)
-    var maxDateTime = new Date(currentDateTime.getTime() + (4 * unixSecPerDay * 1000));
+    var maxDateTime = new Date(currentDateTime.getTime() + (5 * unixSecPerDay * 1000));
     var maxDateTimeString = getDateTimeString(maxDateTime);
 
     // set datetime input min and max attributes
