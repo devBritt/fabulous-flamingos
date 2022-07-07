@@ -23,33 +23,179 @@ var stateInputEl = document.querySelector("#state-input");
 var dateInputEl = document.querySelector("#date-time-input");
 
 // functions
+// Open Weather API call function
+function requestWeatherData() {
+    // get where and when
+    var location = loadFromLocal("location");
+    var inputDate = new Date(loadFromLocal("datetime"));
+    // create call string
+    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&units=imperial&exclude=minutely,hourly,alerts&appid=" + weatherApiKey;
+    
+    // current date
+    var currentDate = new Date();
+    // calculate number of days from current date
+    var numDays = Math.abs(Math.ceil((inputDate.getTime() - currentDate.getTime()) / unixSecPerDay / 1000));
+    console.log(inputDate);
+
+    // request weather data from open weather api
+    fetch(apiUrl)
+    .then(function (response) {
+        response.json()
+        .then(function (data) {
+            console.log(data);
+            // update sun cycle
+            setSunMoonCycles(data.daily[numDays], data.daily[numDays+1].moonset);
+            // determine moon phase name/icon needed
+            setMoonPhaseInfo(data.daily[numDays].moon_phase);
+            // update forecast
+            updateForecast(data);
+        });
+    });
+}
+
+// get weather function
+function updateForecast(data) {
+    var weatherEl = document.querySelectorAll(".forecast-card");
+    
+    // update card contents using weather data
+    for(var i = 0; i < 6; i++) {
+        var date = new Date(data.daily[i].dt*1000);
+        // create img tag for weather icon
+        var iconEl = document.createElement("img");
+        // console.log(weatherEl.item(i).querySelector(".temperature"));
+        // update date
+        weatherEl.item(i).querySelector(".weather-date").textContent = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
+        // update temp
+        weatherEl.item(i).querySelector(".temperature").textContent = Math.round((data.daily[i].temp.min + data.daily[i].temp.max)/2) + "\u00b0";
+        // update icon
+        iconEl.src = getWeatherIcon(data.daily[i].weather[0].id, date);
+        weatherEl.item(i).querySelector(".weather-icon").appendChild(iconEl);
+        // update visibility for current day only
+        weatherEl.item(i).querySelector(".sky-visibility").textContent = data.daily[i].clouds + "\u0025";
+    };
+}
+
+// get weather icon
+function getWeatherIcon(weather, date) {
+    // thunderstorm
+    if (weather > 199 && weather < 233) {
+        return "assets/images/standard-icons/svg/thunderstorm.svg";
+    }
+    // rain
+    else if (weather > 299 && weather < 532) {
+        return "assets/images/standard-icons/svg/rain.svg";
+    }
+    // snow
+    else if (weather > 599 && weather < 623) {
+        // sleet
+        if (weather === 611 || weather === 612 || weather === 613) {
+          return "assets/images/standard-icons/svg/sleet.svg";
+        }
+        return "assets/images/standard-icons/svg/snow.svg";
+    }
+    // mist, smoke, haze
+    else if (weather === 701 || weather === 711 || weather === 721) {
+        return "assets/images/standard-icons/svg/fog.svg";
+    }
+    // clouds
+    else if (weather > 799 && weather < 805) {
+        // check for am/pm
+        if (date.getHours() <= 10) {
+            return "assets/images/standard-icons/svg/cloudy.svg";
+        } else if (date.getHours() > 10) {
+            return "assets/images/standard-icons/svg/cloudy-night.svg";
+        };
+    }
+    // else if weather=800 (clear)
+    else if (weather === 800) {
+        // check for am/pm
+        if (date.getHours() <= 10) {
+            return "assets/images/standard-icons/svg/sun.svg";
+        } else if (date.getHours() > 10) {
+            return "assets/images/standard-icons/svg/moon.svg";
+        };
+    }
+    // else (alien)
+    else {
+        return "assets/images/standard-icons/svg/alien.svg";
+    }
+}
+
 // function to get sun/moon cycle
-function getSunMoonCycle(location, date) {
+function setSunMoonCycles(data, moonset) {
     // html elements to be updated
     var sunriseEl = document.querySelector("#sunrise-time");
     var sunsetEl = document.querySelector("#sunset-time");
     var moonriseEl = document.querySelector("#moonrise-time");
     var moonsetEl = document.querySelector("#moonset-time");
-    // create call string
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&exclude=current,minutely,hourly,alerts&appid=" + weatherApiKey;
-    // create date
-    var currentDate = new Date();
-    // date from input
-    var inputDate = new Date(date);
-    // calculate number of days from current date
-    var numDays = Math.abs(Math.ceil((inputDate.getTime() - currentDate.getTime())/unixSecPerDay/1000));
-    // request weather data from open weather api
-    fetch(apiUrl)
-    .then(function(response) {
-        response.json()
-        .then(function(data) {
-            // update html elements value
-            sunriseEl.textContent = getTimeString(data.daily[numDays].sunrise);
-            sunsetEl.textContent = getTimeString(data.daily[numDays].sunset);
-            moonriseEl.textContent = getTimeString(data.daily[numDays].moonrise);
-            moonsetEl.textContent = getTimeString(data.daily[numDays+1].moonset);
-        });
-    });
+    
+    // update html elements value
+    sunriseEl.textContent = getTimeString(data.sunrise);
+    sunsetEl.textContent = getTimeString(data.sunset);
+    moonriseEl.textContent = getTimeString(data.moonrise);
+    moonsetEl.textContent = getTimeString(moonset);
+}
+
+// function to determine moon phase name/icon needed
+function setMoonPhaseInfo(phaseNum) {
+    // moon phase elemenets
+    var moonphaseiconEl = document.querySelector("#phase-icon");
+    var moonphasenameEl = document.querySelector("#phase-name");
+
+    // create img tag
+    var iconEl = document.createElement("img");
+
+    // determine moon phase based on phase number
+    if (phaseNum === 0 || phaseNum === 1) {
+        // set icon images
+        iconEl.src = "assets/images/standard-icons/svg/new-moon.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "New Moon";
+    } else if (phaseNum > 0 && phaseNum < 0.25) {
+        iconEl.src = "assets/images/standard-icons/svg/wax-c-wan-g.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "Waxing Cresent";
+    } else if (phaseNum === 0.25) {
+        iconEl.src = "assets/images/standard-icons/svg/first-quarter.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "First Quarter";
+    } else if (phaseNum > 0.25 && phaseNum < 0.5) {
+        iconEl.src = "assets/images/standard-icons/svg/wax-g-wan-c.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "Waxing Gibous";
+    } else if (phaseNum === 0.5) {
+        iconEl.src = "assets/images/standard-icons/svg/full-moon.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "Full Moon";
+    } else if (phaseNum > 0.5 && phaseNum < 0.75) {
+        iconEl.src = "assets/images/standard-icons/svg/wax-c-wan-g.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "Waning Gibous";
+    } else if (phaseNum === 0.75) {
+        iconEl.src = "assets/images/standard-icons/svg/last-quarter.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "Last Quarter";
+    } else if (phaseNum > 0.75 && phaseNum < 1) {
+        iconEl.src = "assets/images/standard-icons/svg/wax-g-wan-c.svg";
+        // append icon element to span
+        moonphaseiconEl.appendChild(iconEl);
+        // update moon phase name text
+        moonphasenameEl.textContent = "Waning Cresent";
+    };
 }
 
 // function to format sun/moon cycle times and return as object
@@ -57,7 +203,7 @@ function getTimeString(time) {
     // format time as UTC string
     var utcTime = new Date();
     // convert from seconds to milliseconds
-    utcTime.setTime(time*1000);
+    utcTime.setTime(time * 1000);
     // get string of date
     var dateString = utcTime.toLocaleString();
     // extract time from dateString
@@ -65,7 +211,7 @@ function getTimeString(time) {
     // format time string
     var timeString = dateString[1].split(":");
     timeString = timeString[0] + ":" + timeString[1] + " " + dateString[2];
-    
+
     return timeString;
 }
 
@@ -96,28 +242,28 @@ function formatLocation(input) {
 
     // request location formatting
     fetch(apiUrl)
-    .then(function(response) {
-        response.json()
-        .then(function(data) {
-            // check for array
-            if (Array.isArray(data)) {
-                locationObj.latitude = data[0].lat;
-                locationObj.longitude = data[0].lon;
-            } else {
-                locationObj.latitude = data.lat;
-                locationObj.longitude = data.lon;
-            };
-            // save input to local storage
-            saveToLocal("location", locationObj);
+        .then(function (response) {
+            response.json()
+                .then(function (data) {
+                    // check for array
+                    if (Array.isArray(data)) {
+                        locationObj.latitude = data[0].lat;
+                        locationObj.longitude = data[0].lon;
+                    } else {
+                        locationObj.latitude = data.lat;
+                        locationObj.longitude = data.lon;
+                    };
+                    // save input to local storage
+                    saveToLocal("location", locationObj);
+                });
         });
-    });
 }
 
 // function to set the default value of datetime input
 function setDateInputDefault() {
     var currentDateTime = new Date();
     var dateTime = getDateTimeString(currentDateTime);
-    
+
     // set date picker to current date/time as default
     dateInputEl.setAttribute("value", dateTime);
 }
@@ -128,12 +274,12 @@ function setMinMaxDates() {
     var currentDateTime = new Date();
     var currentDateTimeString = getDateTimeString(currentDateTime);
     // add 4 days to current time for max date (5 days of data)
-    var maxDateTime = new Date(currentDateTime.getTime() + (4*unixSecPerDay*1000));
+    var maxDateTime = new Date(currentDateTime.getTime() + (5 * unixSecPerDay * 1000));
     var maxDateTimeString = getDateTimeString(maxDateTime);
-    
+
     // set datetime input min and max attributes
     dateInputEl.setAttribute("min", currentDateTimeString);
-    dateInputEl.setAttribute("max", maxDateTimeString);   
+    dateInputEl.setAttribute("max", maxDateTimeString);
 }
 
 // function to format date/time string for datetime input attributes
@@ -144,7 +290,7 @@ function getDateTimeString(date) {
     formattedString = formattedString[0].split("T")[0];
     // add time to string
     formattedString = formattedString + "T" + date.toTimeString().slice(0, 5);
-    
+
     return formattedString;
 }
 
@@ -212,7 +358,7 @@ function saveToLocal(type, obj) {
 function loadFromLocal(type) {
     // local storage contents
     var loadObj = JSON.parse(localStorage.getItem(type));
-    
+
     // check for loadObj contents
     if (loadObj) {
         return loadObj;
@@ -234,38 +380,38 @@ function loadFromLocal(type) {
 
 // event listeners
 //Function to toggle dark mode
-darkModeEl.addEventListener("click", function() {
+darkModeEl.addEventListener("click", function () {
     document.body.classList.toggle("dark-theme");
 });
-locationBtnEl.addEventListener("click", function() {
+locationBtnEl.addEventListener("click", function () {
     var location = "";
     // verify text inputs are not empty and contain no numbers
     if (cityInputEl.value && !cityInputEl.value.match(/\d/) && stateInputEl.value && !stateInputEl.value.match(/\d/)) {
         location = cityInputEl.value.trim() + ", " + stateInputEl.value.trim().toUpperCase();
         // format location as latitude/longitude
         formatLocation(location);
-        getSunMoonCycle(location, loadFromLocal("datetime"));
+        requestWeatherData(location, loadFromLocal("datetime"));
         // clear input value
         cityInputEl.value = "";
         stateInputEl.value = "";
     };
 });
-dateBtnEl.addEventListener("click", function() {
+dateBtnEl.addEventListener("click", function () {
     // verify dateTime isn't empty
     if (dateInputEl.value) {
         saveToLocal("datetime", new Date(dateInputEl.value));
         // update sun/moon cycle times
-        getSunMoonCycle(loadFromLocal("location"), loadFromLocal("datetime"));
+        requestWeatherData(loadFromLocal("location"), loadFromLocal("datetime"));
         // clear input value
         dateInputEl.value = "";
     };
 });
 
 // on load function calls
-// get sunrise, sunset, moonrise, and moonset times for current day and display
-getSunMoonCycle(loadFromLocal("location"), Date());
 // calculate and display if planets are above horizon
 requestPlanetData(loadFromLocal("location"));
+// get forecast and display in 6-day forecast section
+requestWeatherData(loadFromLocal("location"), loadFromLocal("datetime"));
 // set datetime input default value as current date and time
 setDateInputDefault();
 // set datetime input min and max dates that can be selected
