@@ -68,6 +68,7 @@ function updateForecast(data) {
         weatherEl.item(i).querySelector(".temperature").textContent = Math.round((data.daily[i].temp.min + data.daily[i].temp.max)/2) + "\u00b0";
         // update icon
         iconEl.src = getWeatherIcon(data.daily[i].weather[0].id, date);
+        iconEl.setAttribute("class", "weather-icon");
         weatherEl.item(i).querySelector(".weather-icon").appendChild(iconEl);
         // update visibility for current day only
         weatherEl.item(i).querySelector(".sky-visibility").textContent = data.daily[i].clouds + "\u0025";
@@ -143,6 +144,7 @@ function setMoonPhaseInfo(phaseNum) {
 
     // create img tag
     var iconEl = document.createElement("img");
+    iconEl.setAttribute("class", "col s6");
 
     // clear previous images
     moonphaseiconEl.innerHTML = "";
@@ -341,9 +343,9 @@ function calcPlanetVisible(planetData) {
     
     // update planet element text to say yes or no
     if (altitude > 0 && altitude < 90) {
-        planetEl.querySelector(".is-it-visibile").textContent = "Yes";
+        planetEl.querySelector(".is-it-visible").textContent = "Yes";
     } else {
-        planetEl.querySelector(".is-it-visibile").textContent = "No";
+        planetEl.querySelector(".is-it-visible").textContent = "No";
     }
 }
 
