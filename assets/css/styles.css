@@ -1,21 +1,149 @@
 /* variables */
+:root {
+    --text-color: #222;
+    --bkg-color-light: rgb(243, 237, 243);
+    --bkg-color-dark: #0f0f0fe7;
+    
+}
 
+main {
+    padding: 15px;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-image: url('/assets/images/nebula-background.jpg');
+    background-size: cover;
+    padding: 10px 50px;
+    margin-bottom: 5px;
+    color: aliceblue;
+}
+
+h1 {
+    margin: 0;
+    font-size: 3em;
+    font-weight: bolder;
+    line-height: 85%;
+}
+
+img {
+    width: 40%;
+}
+
+/*Toggle Dark/Light Mode styling */
+
+#btn-toggle {
+    margin-top: 10px;
+}
+
+body.dark-theme {
+    background-color: var(--bkg-color-dark)
+}
+
+body {
+    background: var(--bkg-color);
+}
+
+#location {
+    --text-color: #eee;
+    --bkg-color: #0f0f0fe7;
+}
+
+.card1 {
+    --text-color: rgb(5, 0, 0);
+    --bkg-color: #0f0f0fe7;
+}
 
 /* global styles */
+.card-panel {
+    border-radius: 10px;
+    padding: 10px 30px;
+}
+
+h2 {
+    font-size: 2.5em;
+    border-bottom: solid purple 4px;
+    padding-bottom: 10px;
+}
+
+
+h3 {
+    font-size: 1.75em;
+    padding-bottom: 10px;
+}
 
 
 /* styles per section */
+#city-input {
+    width: 100%;
+    background-color: black;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid purple;
+    color: white;
+}
 
+#state-input {
+    width: 100%;
+    background-color: black;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid purple;
+    color: white;
+}
 
-/* MEDIA QUERIES */
-/* small screens */
-/* @media screen and (min-width: 640px) {} */
+#dark-mode-toggle {
+    width: 50px;
+}
 
-/* medium screens */
-/* @media screen and (min-width: 768px) {} */
+#date-time {
+    padding-top: 25px;
+    color: black;
+}
 
-/* large screens */
-/* @media screen and (min-width: 992px) {} */
+#date-time-input {
+    border: 2px solid purple;
+    background-color: black;
+}
 
-/* xl screens */
-/* @media screen and (min-width: 1200px) {} */
+.weather-icon {
+    width: 40%;
+}
+
+.cycle-text {
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+h4 {
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+.row {
+    margin-bottom: 10px;
+}
+
+.phase-icon {
+    width: 100%;
+}
+
+/* forecast card text styles */
+.temperature {
+    font-size: large;
+    font-weight: bold;
+}
+
+.weather-date {
+    font-weight: bold ;
+}
+
+.visibility {
+    font-style: italic;
+}
+
+.sky-visibility {
+    font-weight: bold;
+}

@@ -1,18 +1,274 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- css framework stylesheet here -->
+    <!-- MaterializeCSS CDN link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <!-- fonts link here -->
     <link rel="stylesheet" href="./assets/css/styles.css">
-    <title>Document</title>
+    <title>Astrowatch.io</title>
 </head>
+
 <body>
-    
+    <!-- header start -->
+    <header>
+        <h1>Astrowatch.io</h1>
+        <!-- dark mode toggle start -->
+        <img src="./assets/images/standard-icons/svg/dark-mode.svg" alt="Dark mode toggle" id="dark-mode-toggle" />
+        <!-- dark mode toggle end -->
+    </header>
+    <!-- header end -->
+    <!-- main start -->
+    <main class="row">
+        <!-- left column start -->
+        <section class="col m4 s12">
+            <!-- Where and When box start -->
+            <form class="card-panel grey darken-2">
+                <h2 class="center-align white-text">Where and When</h2>
+                <!-- location entry start -->
+                <div id="location" class="card-content row">
+                    <label for="location-input" class="white-text">Enter a city:</label>
+                    <div class="input-field">
+                        <input type="text" id="city-input" placeholder="Coudersport" class="white-text" />
+                    </div>
+                    <label for="state-select" class="white-text">Enter a 2-digit state code:</label>
+                    <div class="input-field">
+                        <input type="text" id="state-input" placeholder="PA" maxlength="2" class="white-text" />
+                    </div>
+                    <button id="set-location" type="button" class="right btn">Set Location</button>
+                </div>
+                <!-- location entry end -->
+                <!-- date/time start -->
+                <div id="date-time" class="card-content row">
+                    <p class="white-text">Viewing Details for <span  id="view-date-time"></span></p>
+                    <label for="date-time-input" class="white-text">If you'd like to see future details, enter a
+                        date:</label>
+                    <div class="input-field">
+                        <input type="datetime-local" class="white-text" name="date-time-input" id="date-time-input" />
+                    </div>
+                    <button id="set-date-time" type="button" class="right btn">Set Date</button>
+                </div>
+
+                <!-- date/time end -->
+            </form>
+            <!-- Where and When box end -->
+            <!-- forecast box start -->
+            <section class="card-panel grey darken-2">
+                    <h2 class="center-align white-text">6-Day Forecast</h2>
+                    <!-- forecast container start -->
+                    <div id="forecast-container" class="row">
+                        <!-- today forecast start -->
+                        <article class="col l6 s12">
+                            <div class="forecast-card card-panel center-align grey darken">
+                                <p class="weather-date white-text">Date</p>
+                                <!-- weather icon goes in span -->
+                                <span class="weather-icon"></span>
+                                <p class="temperature white-text">Temp</p>
+                                <p class="visibility white-text">Cloud Coverage</p> 
+                                <p class="sky-visibility white-text"></p>
+                            </div>
+                        </article>
+                        <!-- today forecast end -->
+                        <!-- day 2 forecast start -->
+                        <article class="col l6 s12">
+                            <div class="forecast-card card-panel center-align grey darken">
+                                <p class="weather-date white-text">Date</p>
+                                <!-- weather icon goes in span -->
+                                <span class="weather-icon"></span>
+                                <p class="temperature white-text">Temp</p>
+                                <p class="visibility white-text">Cloud Coverage</p> 
+                                <p class="sky-visibility white-text"></p>
+                            </div>
+                        </article>
+                        <!-- day 2 forecast end -->
+                        <!-- day 2 forecast start -->
+                        <article class="col l6 s12">
+                            <div class="forecast-card card-panel center-align grey darken">
+                                <p class="weather-date white-text">Date</p>
+                                <!-- weather icon goes in span -->
+                                <span class="weather-icon"></span>
+                                <p class="temperature white-text">Temp</p>
+                                <p class="visibility white-text">Cloud Coverage</p> 
+                                <p class="sky-visibility white-text"></p>
+                            </div>
+                        </article>
+                        <!-- day 2 forecast end -->
+                        <!-- day 2 forecast start -->
+                        <article class="col l6 s12">
+                            <div class="forecast-card card-panel center-align grey darken">
+                                <p class="weather-date white-text">Date</p>
+                                <!-- weather icon goes in span -->
+                                <span class="weather-icon"></span>
+                                <p class="temperature white-text">Temp</p>
+                                <p class="visibility white-text">Cloud Coverage</p> 
+                                <p class="sky-visibility white-text"></p>
+                            </div>
+                        </article>
+                        <!-- day 2 forecast end -->
+                        <!-- day 2 forecast start -->
+                        <article class="col l6 s12">
+                            <div class="forecast-card card-panel center-align grey darken">
+                                <p class="weather-date white-text">Date</p>
+                                <!-- weather icon goes in span -->
+                                <span class="weather-icon"></span>
+                                <p class="temperature white-text">Temp</p>
+                                <p class="visibility white-text">Cloud Coverage</p> 
+                                <p class="sky-visibility white-text"></p>
+                            </div>
+                        </article>
+                        <!-- day 2 forecast end -->
+                        <!-- day 2 forecast start -->
+                        <article class="col l6 s12">
+                            <div class="forecast-card card-panel center-align grey darken">
+                                <p class="weather-date white-text">Date</p>
+                                <!-- weather icon goes in span -->
+                                <span class="weather-icon"></span>
+                                <p class="temperature white-text">Temp</p>
+                                <p class="visibility white-text">Cloud Coverage</p> 
+                                <p class="sky-visibility white-text"></p>
+                            </div>
+                        </article>
+                        <!-- day 2 forecast end -->
+                    </div>
+                <!-- forecast container end -->
+            </section>
+            <!-- forecast box end -->
+        </section>
+        <!-- left column end -->
+        <!-- right column start -->
+        <section class="col m8 s12">
+            <!-- details sections cointainer start -->
+            <div class="card-panel grey darken-2">
+                <h2 class="center-align white-text">Viewing Details</h2>
+                <div class="row">
+                    <!-- left details column start -->
+                    <section class="col xl4 m6 s12">
+                        <!-- Sun Cycle section start -->
+                        <section id="sun-cycle" class="card-panel grey darken">
+                            <h3 class="center-align white-text" id="suncycle">Sun Cycle</h3>
+                            <!-- sunrise container start -->
+                            <div id="sunrise" class="row valign-wrapper">
+                                <img src="./assets/images/standard-icons/svg/sunrise.svg" class="col s6" />
+                                <p id="sunrise-time" class="right-align white-text cycle-text col s6">Sunrise Time</p>
+                            </div>
+                            <!-- sunrise container end -->
+                            <!-- sunset container start -->
+                            <div id="sunset" class="row valign-wrapper">
+                                <img src="./assets/images/standard-icons/svg/sunset.svg" class="col s6" />
+                                <p id="sunset-time" class="right-align white-text cycle-text col s6">Sunset Time</p>
+                            </div>
+                            <!-- sunset container end -->
+                            <!-- Sun Cycle section end -->
+                        </section>
+                        <!-- Moon Cycle section start -->
+                        <section id="moon-cycle" class="card-panel grey darken">
+                            <h3 class="center-align white-text" id="mooncycle">Moon Cycle</h3>
+                            <!-- Moonrise container start -->
+                            <div id="moonrise" class="row valign-wrapper">
+                                <img src="./assets/images/standard-icons/svg/moonrise.svg" class="col s6" />
+                                <p id="moonrise-time" class="right-align white-text cycle-text col s6">Moonrise Time</p>
+                            </div>
+                            <!-- Moonrise container end -->
+                            <!-- Moonset container start -->
+                            <div id="moonset" class="row valign-wrapper">
+                                <img src="./assets/images/standard-icons/svg/moonset.svg" class="col s6" />
+                                <p id="moonset-time" class="right-align white-text cycle-text col s6">Moonset Time</p>
+                            </div>
+                            <!-- Moonset container end -->
+                            <!-- Moon Phase container start -->
+                            <div id="moon-phase" class="row valign-wrapper">
+                                <span id="phase-icon" class="col s6">
+                                    <!-- dynamically update moon phase icon -->
+                                </span>
+                                <p id="phase-name" class="right-align white-text cycle-text col s6">Moon Phase</p>
+                            </div>
+                            <!-- Moon Phase container end -->
+                        </section>
+                        <!-- Moon Cycle section end -->
+                    </section>
+                    <!-- left details column end -->
+                    <!-- right details column start -->
+                    <section id="planets" class="col xl8 m6 s12">
+                        <div class="card-panel grey dark">
+                            <h3 class="center-align white-text">Is it in Your Sky?</h3>
+                            <div class="row">
+                                    <!-- Mercury visibility container start -->
+                                    <div id="mercury" class="center-align col l6 s12">
+                                        <h4 class="white-text">Mercury</h4>
+                                        <img src="./assets/images/standard-icons/svg/mercury.svg"
+                                            alt="Icon representation of the planet Mercury" />
+                                        <h4 class="is-it-visible white-text">Yes or No</h4>
+                                    </div>
+                                    <!-- Mercury visibilitiy container end -->
+                                    <!-- Venus visibility container start -->
+                                    <div id="venus" class="center-align col l6 s12">
+                                        <h4 class="white-text">Venus</h4>
+                                        <img src="./assets/images/standard-icons/svg/venus.svg"
+                                            alt="Icon representation of the planet Venus" />
+                                        <h4 class="is-it-visible white-text">Yes or No</h4>
+                                    </div>
+                                    <!-- Venus visibilitiy container end -->
+                                    <!-- Mars visibility container start -->
+                                    <div id="mars" class="center-align col l6 s12">
+                                        <h4 class="white-text">Mars</h4>
+                                        <img src="./assets/images/standard-icons/svg/mars.svg"
+                                            alt="Icon representation of the planet Mars" />
+                                        <h4 class="is-it-visible white-text">Yes or No</h4>
+                                    </div>
+                                    <!-- Mars visibilitiy container end -->
+                                    <!-- Jupiter visibility container start -->
+                                    <div id="jupiter" class="center-align col l6 s12">
+                                        <h4 class="white-text">Jupiter</h4>
+                                        <img src="./assets/images/standard-icons/svg/jupiter.svg"
+                                            alt="Icon representation of the planet Jupiter" />
+                                        <h4 class="is-it-visible white-text">Yes or No</h4>
+                                    </div>
+                                    <!-- Jupiter visibilitiy container end -->
+                                    <!-- Saturn visibility container start -->
+                                    <div id="saturn" class="center-align col l6 s12">
+                                        <h4 class="white-text">Saturn</h4>
+                                        <img src="./assets/images/standard-icons/svg/saturn.svg" />
+                                        <h4 class="is-it-visible white-text">Yes or No</h4>
+                                    </div>
+                                    <!-- Saturn visibility container end -->
+                                    <!-- Uranus visibility container start -->
+                                    <div id="uranus" class="center-align col l6 s12">
+                                        <h4 class="white-text">Uranus</h4>
+                                        <img src="./assets/images/standard-icons/svg/uranus.svg"
+                                            alt="Icon representation of the planet Uranus" />
+                                        <h4 class="is-it-visible white-text">Yes or No</h4>
+                                    </div>
+                                    <!-- Uranus visibilitiy container end -->
+                                    <!-- Neptune visibility container start -->
+                                    <div id="neptune" class="center-align col l6 s12">
+                                        <h4 class="white-text">Neptune</h4>
+                                        <img src="./assets/images/standard-icons/svg/neptune.svg"
+                                            alt="Icon representation of the planet Neptune" />
+                                        <h4 class="is-it-visible white-text">Yes or No</h4>
+                                    </div>
+                                    <!-- Neptune visibilitiy container end -->
+                            </div>
+                        </div>
+                    </section>
+                    <!-- right details column end -->
+                    </div>
+                </div>
+                <!-- details sections container end -->
+            </section>
+        </section>
+        <!-- right column end -->
+    </main>
+    <!-- main end -->
     <!-- scripts -->
     <!-- any dependencies for frameworks go first -->
+    <script src="https://cdn.jsdelivr.net/gh/lizard-isana/orb.js@v2.4/build/min/orb.v2.min.js"></script>
     <script src="./assets/js/script.js"></script>
+    <footer>
+        <!-- copyright with alien svg -->
+    </footer>
 </body>
+
 </html>
