@@ -35,14 +35,12 @@ function requestWeatherData() {
     var currentDate = new Date();
     // calculate number of days from current date
     var numDays = Math.abs(Math.ceil((inputDate.getTime() - currentDate.getTime()) / unixSecPerDay / 1000));
-    console.log(inputDate);
 
     // request weather data from open weather api
     fetch(apiUrl)
     .then(function (response) {
         response.json()
         .then(function (data) {
-            console.log(data);
             // update sun cycle
             setSunMoonCycles(data.daily[numDays], data.daily[numDays+1].moonset);
             // determine moon phase name/icon needed
@@ -56,13 +54,11 @@ function requestWeatherData() {
 // get weather function
 function updateForecast(data) {
     var weatherEl = document.querySelectorAll(".forecast-card");
-    
     // update card contents using weather data
     for(var i = 0; i < 6; i++) {
         var date = new Date(data.daily[i].dt*1000);
         // create img tag for weather icon
         var iconEl = document.createElement("img");
-        // console.log(weatherEl.item(i).querySelector(".temperature"));
         // update date
         weatherEl.item(i).querySelector(".weather-date").textContent = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
         // update temp
