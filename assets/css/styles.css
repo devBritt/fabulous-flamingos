@@ -130,10 +130,7 @@ h4 {
     width: 100%;
 }
 
-/*#forecast-container p{
-    font-weight: bold;
-}*/
-
+/* forecast card text styles */
 .temperature {
     font-size: large;
     font-weight: bold;

@@ -391,6 +391,7 @@ function saveToLocal(type, obj) {
     if (type === "location") {
         localStorage.setItem(type, JSON.stringify(obj));
     } else if (type === "datetime") {
+        console.log(obj);
         localStorage.setItem(type, JSON.stringify(obj.getTime()));
     };
 }
@@ -415,7 +416,7 @@ function loadFromLocal(type) {
         return loadObj;
     } else if (type === "datetime") {
         // default to today's date
-        saveToLocal(type, Date.now());
+        saveToLocal(type, new Date());
     }
 };
 
