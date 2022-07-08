@@ -14,7 +14,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-image: url('/assets/images/nebula-background.jpg');
+    background-image: url('./assets/images/nebula-background.jpg');
     background-size: cover;
     padding: 10px 50px;
     margin-bottom: 5px;
