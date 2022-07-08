@@ -221,7 +221,7 @@ function getTimeString(time) {
 function formatLocation(input) {
     // extract city and state from location text
     var location;
-    var apiUrl = "http://api.openweathermap.org/geo/1.0/";
+    var apiUrl = "https://api.openweathermap.org/geo/1.0/";
     // lat/lon object
     var locationObj = {
         latitude: "",
