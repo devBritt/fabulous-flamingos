@@ -23,9 +23,6 @@ Possible feature updates may include planet magnitude (brightness), astronomical
 
 [Astrowatch.io](https://devbritt.github.io/fabulous-flamingos/)
 
-![App Screenshot](./assets/images/screenshot.jpg)
-
-
 ## Our Team
 **Brittany Carlton** - Team Lead, UI/UX design, Sun and Moon Cycles, Planet Visibility  
 GitHub: [devBritt](https://github.com/devBritt)
