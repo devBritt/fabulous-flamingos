@@ -21,16 +21,17 @@ var cityInputEl = document.querySelector("#city-input");
 var stateInputEl = document.querySelector("#state-input");
 // date input element
 var dateInputEl = document.querySelector("#date-time-input");
-
+ var lateral = 0
+ var longiral = 0
 // functions
 // Open Weather API call function
-function requestWeatherData() {
+function requestWeatherData(lat, lon) {
     // get where and when
     var location = loadFromLocal("location");
     var inputDate = new Date(loadFromLocal("datetime"));
     // create call string
-    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + location.latitude + "&lon=" + location.longitude + "&units=imperial&exclude=minutely,hourly,alerts&appid=" + weatherApiKey;
-    
+    var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&exclude=minutely,hourly,alerts&appid=" + weatherApiKey;
+
     // current date
     var currentDate = new Date();
     // calculate number of days from current date
@@ -38,25 +39,25 @@ function requestWeatherData() {
 
     // request weather data from open weather api
     fetch(apiUrl)
-    .then(function (response) {
-        response.json()
-        .then(function (data) {
-            // update sun cycle
-            setSunMoonCycles(data.daily[numDays], data.daily[numDays+1].moonset);
-            // determine moon phase name/icon needed
-            setMoonPhaseInfo(data.daily[numDays].moon_phase);
-            // update forecast
-            updateForecast(data);
+        .then(function (response) {
+            response.json()
+                .then(function (data) {
+                    // update sun cycle
+                    setSunMoonCycles(data.daily[numDays], data.daily[numDays + 1].moonset);
+                    // determine moon phase name/icon needed
+                    setMoonPhaseInfo(data.daily[numDays].moon_phase);
+                    // update forecast
+                    updateForecast(data);
+                });
         });
-    });
 }
 
 // get weather function
 function updateForecast(data) {
     var weatherEl = document.querySelectorAll(".forecast-card");
     // update card contents using weather data
-    for(var i = 0; i < 6; i++) {
-        var date = new Date(data.daily[i].dt*1000);
+    for (var i = 0; i < 6; i++) {
+        var date = new Date(data.daily[i].dt * 1000);
         // clear previous icons
         weatherEl.item(i).querySelector(".weather-icon").innerHTML = "";
         // create img tag for weather icon
@@ -64,7 +65,7 @@ function updateForecast(data) {
         // update date
         weatherEl.item(i).querySelector(".weather-date").textContent = (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear();
         // update temp
-        weatherEl.item(i).querySelector(".temperature").textContent = Math.round((data.daily[i].temp.min + data.daily[i].temp.max)/2) + "\u00b0";
+        weatherEl.item(i).querySelector(".temperature").textContent = Math.round((data.daily[i].temp.min + data.daily[i].temp.max) / 2) + "\u00b0";
         // update icon
         iconEl.src = getWeatherIcon(data.daily[i].weather[0].id, date);
         iconEl.setAttribute("class", "weather-icon");
@@ -88,7 +89,7 @@ function getWeatherIcon(weather, date) {
     else if (weather > 599 && weather < 623) {
         // sleet
         if (weather === 611 || weather === 612 || weather === 613) {
-          return "assets/images/standard-icons/svg/sleet.svg";
+            return "assets/images/standard-icons/svg/sleet.svg";
         }
         return "assets/images/standard-icons/svg/snow.svg";
     }
@@ -127,7 +128,7 @@ function setSunMoonCycles(data, moonset) {
     var sunsetEl = document.querySelector("#sunset-time");
     var moonriseEl = document.querySelector("#moonrise-time");
     var moonsetEl = document.querySelector("#moonset-time");
-    
+
     // update html elements value
     sunriseEl.textContent = getTimeString(data.sunrise);
     sunsetEl.textContent = getTimeString(data.sunset);
@@ -241,19 +242,30 @@ function formatLocation(input) {
         // return to calling function in any other case
         return;
     }
-    
+
     // request location formatting
     fetch(apiUrl)
-    .then(function (response) {
-        response.json()
+        .then(function (response) {
+            response.json()
                 .then(function (data) {
                     // check for array
                     if (Array.isArray(data)) {
                         locationObj.latitude = data[0].lat;
                         locationObj.longitude = data[0].lon;
+                        lateral = data[0].lat
+                        longiral = data[0].lon
+                        requestWeatherData(lateral, longiral)
+                        requestPlanetData(lateral, longiral)
+                        // console.log("1st try")
+                        // console.log(lateral)
+                      
                     } else {
                         locationObj.latitude = data.lat;
                         locationObj.longitude = data.lon;
+                        console.log("2nd call: ", locationObj.latitude)
+                        console.log(locationObj.latitude)
+
+
                     };
                     // save input to local storage
                     saveToLocal("location", locationObj);
@@ -298,38 +310,38 @@ function getDateTimeString(date) {
 
 
 // function to calculate if a planet is visible
-function requestPlanetData() {
+function requestPlanetData(lat, lon) {
     // get saved date
     var fromDate = new Date(loadFromLocal("datetime")) || new Date();
-    var toDate = new Date(fromDate.valueOf()+(unixSecPerDay*1000));
+    var toDate = new Date(fromDate.valueOf() + (unixSecPerDay * 1000));
     const params = [
-        "latitude=" + loadFromLocal("location").latitude,
-        "longitude=" + loadFromLocal("location").longitude,
+        "latitude=" + String(lat),
+        "longitude=" + String(lon),
         "elevation=0",
         "from_date=" + fromDate.toJSON().slice(0, 10),
         "to_date=" + toDate.toJSON().slice(0, 10),
         "time=" + fromDate.toJSON().slice(11, 19)
     ];
-    
+
     const urlQuery = params.join('&');
-    
+
     fetch(astroUrl + urlQuery, {
         method: "GET",
         headers: {
             "Authorization": "Basic " + authKey
         }
     })
-    .then(function (response) {
-        response.json()
-        .then(function (data) {
-            for (var i = 0; i < data.data.table.rows.length; i++) {
-                var planetName = data.data.table.rows[i].entry.id;
-                if (planetName === "mercury" || planetName === "venus" || planetName === "mars" || planetName === "jupiter" || planetName === "saturn" || planetName === "uranus" || planetName === "neptune") {
-                    calcPlanetVisible(data.data.table.rows[i]);
-                }
-            };
-        })
-    });
+        .then(function (response) {
+            response.json()
+                .then(function (data) {
+                    for (var i = 0; i < data.data.table.rows.length; i++) {
+                        var planetName = data.data.table.rows[i].entry.id;
+                        if (planetName === "mercury" || planetName === "venus" || planetName === "mars" || planetName === "jupiter" || planetName === "saturn" || planetName === "uranus" || planetName === "neptune") {
+                            calcPlanetVisible(data.data.table.rows[i]);
+                        }
+                    };
+                })
+        });
 }
 
 // function to calculate if planet is visible
@@ -338,7 +350,7 @@ function calcPlanetVisible(planetData) {
     var planetEl = document.querySelector("#" + planetData.cells[0].id);
     // planet horizonal altitude
     var altitude = planetData.cells[0].position.horizonal.altitude.degrees;
-    
+
     // update planet element text to say yes or no
     if (altitude > 0 && altitude < 90) {
         planetEl.querySelector(".is-it-visible").textContent = "Yes";
@@ -381,7 +393,7 @@ function updateDateText() {
 
     // construct date time string
     var dateTimeString = dateStrings.join("/") + " " + timeStrings[0] + ":" + timeStrings[1] + " " + timeStrings[2];
-    
+
     datetimeEl.textContent = dateTimeString;
 }
 
@@ -415,7 +427,7 @@ function loadFromLocal(type) {
     } else if (type === "datetime") {
         // default to today's date
         saveToLocal(type, new Date());
-    }
+    } 
 };
 
 // event listeners
@@ -424,7 +436,11 @@ darkModeEl.addEventListener("click", function () {
     document.body.classList.toggle("dark-theme");
 });
 locationBtnEl.addEventListener("click", function () {
+    // cityInputEl.classList.add('hide')
     var location = "";
+
+    console.log("city" + cityInputEl.value)
+    console.log(stateInputEl.value)
     // verify text inputs are not empty and contain no numbers
     if (cityInputEl.value && !cityInputEl.value.match(/\d/) && stateInputEl.value && !stateInputEl.value.match(/\d/)) {
         location = cityInputEl.value.trim() + ", " + stateInputEl.value.trim().toUpperCase();
@@ -458,9 +474,9 @@ dateBtnEl.addEventListener("click", function () {
 
 // on load function calls
 // calculate and display if planets are above horizon
-requestPlanetData();
+// requestPlanetData();
 // update weather, sun/moon cycles
-requestWeatherData();
+// requestWeatherData();
 // set datetime input default value as current date and time
 setDateInputDefault();
 // set datetime input min and max dates that can be selected

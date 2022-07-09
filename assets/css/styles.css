@@ -147,3 +147,7 @@ h4 {
 .sky-visibility {
     font-weight: bold;
 }
+
+.hide{
+    display:none
+}
